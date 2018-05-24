@@ -7521,8 +7521,28 @@ class XEducationSlideIntro extends XEducationSlide {
                 </div>
 
                 <button next class="center">Nimiq is not a Bank</button>
+
+                <div class="spacing-top -center">
+                    Click the button above to go to the next slide... or enter the keyphrase to skip it:
+                    <input type="text" placeholder="keyphrase" spellcheck="false" autocomplete="off">
+                </div>
             </div>
         `;
+    }
+
+    onCreate() {
+        super.onCreate();
+        this.$input = this.$('input');
+        this.$input.addEventListener('keypress', e => this._onKeypress(e));
+    }
+
+    _onKeypress(e) {
+        if (e.keyCode !== 13) return; // any key
+        if (this.$input.value === 'safe') {
+            XEducationSlides.finish();
+        } else {
+            this.$input.value = '';                
+        }
     }
 }
 
@@ -7726,6 +7746,10 @@ class XEducationSlideLoss extends XEducationSlide {
                     <button back>Scams</button>
                     <button next>Got it</button>
                 </div>
+
+                <div class="spacing-top -center">
+                    The next time you see this presentation enter <strong>"safe"</strong> for the keyphrase to skip it.
+                </div>
             </div>
         `;
     }
@@ -7755,9 +7779,7 @@ class XEducationSlides {
         if (nextSlide) {
             nextSlide.show();
         } else {
-            localStorage[XEducationSlides.KEY_FINISHED] = 'yes';
-            XEducationSlides.hide();
-            XEducationSlides.onFinished();
+            XEducationSlides.finish();
         }
     }
 
@@ -7765,6 +7787,12 @@ class XEducationSlides {
         const previousSlide = XEducationSlides.previousSlide;
         if (!previousSlide) return;
         previousSlide.show();
+    }
+
+    static finish() {
+        localStorage[XEducationSlides.KEY_FINISHED] = 'yes';
+        XEducationSlides.hide();
+        XEducationSlides.onFinished();
     }
 
     static get currentSlide() {
