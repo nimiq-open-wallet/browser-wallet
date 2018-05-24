@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Nimiq Safe</title>
+    <!-- PWA Configs -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="/libraries/nimiq-style/icons/favicon.ico">
+    <!-- Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#536dfe">
+    <link rel="manifest" href="pwa/manifest.json">
+    <meta name="google" content="notranslate">
+    <!-- iOS ( See: https://developer.apple.com/libraries/content/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html ) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
+    <link rel="apple-touch-icon" href="pwa/icons/apple-touch-icon.png">
+    <link rel="apple-touch-startup-image" href="pwa/icons/icon-512x512.png">
+    <!-- build:css -->
+    <link rel="stylesheet" href="safe.css">
+    <!-- endbuild -->
+    <title>Nimiq Safe</title>
+</head>
+<body class="preparing">
+<div id="app"></div>
+<!-- @asset(/libraries/nimiq-utils/moment/moment.min.js) -->
+<script src="/libraries/nimiq-utils/moment/moment.min.js"></script>
+<!-- build:js -->
+<script src="safe.js" type="module"></script>
+<!-- endbuild -->
+<!-- build:browser-warning --><!-- endbuild -->
+</body>
+</html>

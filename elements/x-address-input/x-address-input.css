@@ -1,0 +1,74 @@
+@import '../x-address/x-address.css';
+
+x-address-input.x-address {
+    max-width: 600px;
+    padding: 4px 0 4px 0;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 20px;
+}
+
+x-address-input.x-address[small] {
+    max-width: 540px;
+    font-size: 13px;
+}
+
+x-address-input form {
+    min-width: 320px;
+    flex-grow: 1;
+}
+
+x-address-input input[type="text"] {
+    font-size: inherit;
+    width: 100%;
+    transition: opacity 300ms;
+    font-weight: inherit;
+
+    text-align: left;
+    text-transform: uppercase;
+}
+
+x-address-input x-identicon {
+    width: 80px;
+    height: 72px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+x-address-input.multiline x-identicon {
+    display: block;
+    margin: 0 auto;
+}
+
+x-address-input[small] x-identicon {
+    width: 28px;
+    height: 28px;
+    margin-right: 4px;
+}
+
+x-address-input .prefix {
+    margin-top: 1px;
+}
+
+x-address-input input[type="text"]::placeholder,
+x-address-input input[type="text"]::-webkit-input-placeholder {
+    text-align: left;
+    padding-left: 10px;
+}
+
+x-address-input.multiline x-identicon {
+    margin-bottom: 12px;
+}
+
+x-address-input.multiline .input-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+x-address-input.multiline .input-row input {
+    width: auto;
+}

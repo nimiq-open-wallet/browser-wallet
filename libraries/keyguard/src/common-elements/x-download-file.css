@@ -1,0 +1,32 @@
+@import '/secure-elements/x-downloadable-image/x-downloadable-image.css';
+
+x-download-file{
+	position:  relative;
+	display: block;
+	text-align: center;
+}
+
+x-download-file x-downloadable-image {
+	width: 100%;
+	max-width:  260px;
+	transition: transform 300ms;
+	/*flex-grow:  1;*/
+}
+
+x-download-file:hover x-downloadable-image {
+	transform:scale(1.02);
+}
+
+x-download-file x-downloadable-image img {
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+@media (max-height: 700px){
+	x-download-file x-downloadable-image img {
+		max-height: 44vh;
+        width: unset;
+		height: unset;
+	}
+}

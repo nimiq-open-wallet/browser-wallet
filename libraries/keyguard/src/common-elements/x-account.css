@@ -1,0 +1,20 @@
+x-account, x-my-account {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin: 16px;
+}
+
+.x-account-label {
+    text-align: center;
+    margin: 10px;
+}
+
+@media (max-width: 480px) {
+    x-account x-identicon,
+    x-my-account x-identicon {
+        width: 120px;
+        height: 120px;
+    }
+}

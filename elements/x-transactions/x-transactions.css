@@ -1,0 +1,219 @@
+@import '../x-address/x-address.css';
+@import '/secure-elements/x-loading-animation/x-loading-animation.css';
+@import '/elements/x-popup-menu/x-popup-menu.css';
+
+x-transactions {
+    display: block;
+    width: 100%;
+    text-align: right;
+    margin-top: -2.8em;
+}
+
+x-transactions a[secondary] {
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    padding: 1em;
+    margin-bottom: -1em;
+    margin-top: 5px;
+}
+
+x-transactions-list {
+    display: table;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+x-transactions-list x-loading-animation {
+    margin: 0 auto;
+    margin-top: 2em;
+}
+
+x-transactions-list x-loading-animation + h2 {
+    text-align: center;
+}
+
+x-transaction {
+    display: table-row;
+    padding: 8px 0;
+    animation: from-right 500ms;
+    animation-fill-mode: backwards; /* Apply the animation's opacity: 0 when the animation property is applied */
+    cursor: pointer;
+}
+
+x-transaction > * {
+    /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
+    display: table-cell !important;
+    vertical-align: middle;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+x-transaction > *:first-child {
+    padding-left: 8px;
+}
+
+x-transaction > *:last-child {
+    padding-right: 8px;
+}
+
+x-transaction:last-child > * {
+    border-bottom: none;
+}
+
+x-transaction:nth-child(1) { animation-delay: 0.0s }
+x-transaction:nth-child(2) { animation-delay: 0.1s }
+x-transaction:nth-child(3) { animation-delay: 0.2s }
+x-transaction:nth-child(4) { animation-delay: 0.3s }
+x-transaction:nth-child(5) { animation-delay: 0.4s }
+x-transaction:nth-child(6) { animation-delay: 0.5s }
+x-transaction:nth-child(7) { animation-delay: 0.6s }
+x-transaction:nth-child(8) { animation-delay: 0.7s }
+x-transaction:nth-child(9) { animation-delay: 0.8s }
+x-transaction:nth-child(10){ animation-delay: 0.9s }
+
+x-transactions.no-animation x-transaction {
+    animation: none !important;
+    animation-delay: 0s !important;
+}
+
+x-transaction:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+x-transaction:last-child {
+    border-bottom: 1px solid transparent;
+}
+
+x-transaction x-identicon {
+    width: 66px;
+    height: 50px;
+    padding: 0 8px;
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+    x-transaction .label {
+        display: none !important;
+    }
+}
+
+x-transaction.incoming .label[recipient],
+x-transaction.outgoing .label[sender],
+x-transaction.transfer .label {
+    font-weight: bold;
+}
+
+x-transaction .timestamp {
+    /* text-transform: uppercase; */
+}
+
+x-transaction x-amount {
+    text-align: right;
+    font-size: 1.4em;
+}
+
+@media (max-width: 768px) {
+    x-transaction x-amount {
+        font-size: 1.2em;
+    }
+
+    x-transaction x-amount .rest-decimals {
+        display: none;
+    }
+
+    x-transaction x-amount .ticker {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    x-transaction x-amount {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 350px) {
+    x-transaction x-amount {
+        font-size: 1em;
+    }
+}
+
+/* Responsiveness */
+@media (min-width: 480px) {
+    x-transaction {
+        padding: 8px 16px;
+    }
+}
+
+x-transactions-list x-no-content {
+	display: flex;
+	flex-grow: 1;
+	font-size: 20px;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+x-paginator {
+    display: block;
+    text-align: center;
+}
+
+x-paginator button {
+    display: inline;
+}
+
+x-transaction-modal {
+    max-width: 600px;
+}
+
+x-transaction-modal x-identicon {
+    display: block;
+    width: 120px;
+    margin-bottom: 0.25em;
+}
+
+x-transaction-modal label {
+    display: block;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-top: 1em;
+}
+
+x-transaction-modal .label {
+    display: block;
+    margin-bottom: 0.2em;
+    font-size: 1em;
+}
+
+x-transaction-modal x-address {
+    display: inline-block;
+    margin-bottom: 0.5em;
+}
+
+x-transaction-modal .blockHeight,
+x-transaction-modal .confirmations,
+x-transaction-modal .timestamp,
+x-transaction-modal x-amount,
+x-transaction-modal .fee {
+    display: block;
+    font-size: 1.2em;
+}
+
+x-transaction-modal .confirmations {
+    font-size: 1em;
+}
+
+x-transaction-modal x-amount {
+    font-size: 1.4em;
+}
+
+x-transaction-modal .hash {
+    font-family: monospace;
+}

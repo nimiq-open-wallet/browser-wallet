@@ -1,0 +1,18 @@
+@import '../x-input/x-input.css';
+
+x-passphrase-input form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+x-passphrase-input form input {
+    padding-right: 40px;
+}
+
+x-passphrase-input form #eye {
+    position: absolute;
+    right: -3px;
+    cursor: pointer;
+}

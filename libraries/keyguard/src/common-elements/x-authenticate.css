@@ -1,0 +1,36 @@
+@import '/secure-elements/x-passphrase-setter/x-passphrase-setter.css';
+
+x-authenticate {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: var(--max-width);
+}
+
+x-authenticate div[buttons] {
+    position: relative;
+}
+
+x-authenticate div[buttons] > * {
+    position: absolute;
+    top: 0;
+}
+
+x-authenticate [wrong][disabled] {
+    background: var(--error-color);
+    color: white;
+}
+
+x-authenticate:not(.wrong) [wrong] {
+    display: none;
+}
+
+x-authenticate button {
+    transition: opacity 300ms;
+}
+
+x-authenticate.wrong button {
+    opacity: 0;
+}

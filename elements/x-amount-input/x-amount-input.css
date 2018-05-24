@@ -1,0 +1,43 @@
+@import '../../secure-elements/x-input/x-input.css';
+@import '../x-numpad/x-numpad.css';
+
+x-amount-input input {
+    font-size: 3.5em !important;
+    font-weight: 300;
+    padding-bottom: 0;
+    width: 100% !important;
+}
+
+x-amount-input input::placeholder {
+    font-size: 1em !important;
+}
+
+x-amount-input input:after {
+    position: absolute;
+    right: -32px;
+    bottom: 6px;
+    margin: 0;
+    padding: 0;
+}
+
+@media (min-width: 420px) {
+    x-amount-input x-numpad {
+        display: none;
+    }
+}
+
+x-amount-input input[disabled] {
+    opacity: 1;
+    cursor: default;
+}
+
+x-amount-input form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+x-amount-input x-currency-1 {
+    display: block;
+}

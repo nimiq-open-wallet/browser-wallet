@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nimiq Keyguard</title>
+    <!-- <script src="https://cdn.nimiq-network.com/branches/master/nimiq.js"></script> -->
+    <script src="/dist/nimiq.js"></script>
+    <!-- @asset(/dist/nimiq.js) -->
+    <!-- @asset(/dist/web.js) -->
+    <!-- @asset(/dist/web-babel.js) -->
+    <!-- @asset(/dist/worker.js) -->
+    <!-- @asset(/dist/worker-js.js) -->
+    <!-- @asset(/dist/worker-wasm.js) -->
+    <!-- @asset(/dist/worker-wasm.wasm) -->
+    <!-- PWA Configs -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="/libraries/nimiq-style/icons/favicon.ico">
+    <!-- Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#536dfe">
+    <meta name="google" content="notranslate">
+    <!-- iOS ( See: https://developer.apple.com/libraries/content/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html ) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self' 'unsafe-eval' https://cdn.nimiq-network.com/;
+          img-src http: https: blob: data:; worker-src 'self' blob:; style-src 'self';">
+    <link rel="apple-touch-icon" href="pwa/icons/apple-touch-icon.png">
+    <link rel="apple-touch-startup-image" href="pwa/icons/icon-512x512.png">
+    <!-- build:css -->
+    <link rel="stylesheet" href="keyguard.css">
+    <!-- endbuild -->
+</head>
+<body>
+<div id="app">
+    <div class="x-loading">
+        <x-loading-animation></x-loading-animation>
+        <h2>Processing request</h2>
+    </div>
+</div>
+<!-- build:js -->
+<script src="keyguard.js" type="module"></script>
+<!-- endbuild -->
+
+</body>
+</html>

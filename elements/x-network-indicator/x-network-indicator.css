@@ -1,0 +1,30 @@
+x-network-indicator {
+    display: block;
+    /* padding-top: 0.4em; */
+}
+
+x-network-indicator hr {
+    border: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+x-network-indicator div {
+    line-height: 45px;
+}
+
+x-network-indicator label,
+x-network-indicator span {
+    display: inline-block;
+    width: 49%;
+}
+
+x-network-indicator label {
+    opacity: 0.6;
+}
+
+x-network-indicator span {
+    text-align: right;
+    font-size: 1.5em;
+    text-transform: capitalize;
+}
