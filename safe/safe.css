@@ -625,17 +625,17 @@ iframe[name="network"] {
   font-style: normal;
   font-weight: 400;
   /*
-  @asset(MaterialIcons-Regular.eot)
-  @asset(MaterialIcons-Regular.woff2)
-  @asset(MaterialIcons-Regular.woff)
-  @asset(MaterialIcons-Regular.ttf)
+  @asset(../style/MaterialIcons-Regular.eot)
+  @asset(../style/MaterialIcons-Regular.woff2)
+  @asset(../style/MaterialIcons-Regular.woff)
+  @asset(../style/MaterialIcons-Regular.ttf)
    */
-  src: url(MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: url(../style/MaterialIcons-Regular.eot); /* For IE6-8 */
   src: local('Material Icons'),
-       local('MaterialIcons-Regular'),
-       url(MaterialIcons-Regular.woff2) format('woff2'),
-       url(MaterialIcons-Regular.woff) format('woff'),
-       url(MaterialIcons-Regular.ttf) format('truetype');
+       local('../style/MaterialIcons-Regular'),
+       url(../style/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../style/MaterialIcons-Regular.woff) format('woff'),
+       url(../style/MaterialIcons-Regular.ttf) format('truetype');
 }
 
 .material-icons {
@@ -5589,17 +5589,17 @@ iframe[name="network"] {
   font-style: normal;
   font-weight: 400;
   /*
-  @asset(MaterialIcons-Regular.eot)
-  @asset(MaterialIcons-Regular.woff2)
-  @asset(MaterialIcons-Regular.woff)
-  @asset(MaterialIcons-Regular.ttf)
+  @asset(../style/MaterialIcons-Regular.eot)
+  @asset(../style/MaterialIcons-Regular.woff2)
+  @asset(../style/MaterialIcons-Regular.woff)
+  @asset(../style/MaterialIcons-Regular.ttf)
    */
-  src: url(MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: url(../style/MaterialIcons-Regular.eot); /* For IE6-8 */
   src: local('Material Icons'),
-       local('MaterialIcons-Regular'),
-       url(MaterialIcons-Regular.woff2) format('woff2'),
-       url(MaterialIcons-Regular.woff) format('woff'),
-       url(MaterialIcons-Regular.ttf) format('truetype');
+       local('../style/MaterialIcons-Regular'),
+       url(../style/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../style/MaterialIcons-Regular.woff) format('woff'),
+       url(../style/MaterialIcons-Regular.ttf) format('truetype');
 }
 
 .material-icons {
