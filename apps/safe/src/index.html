@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Nimiq Safe</title>
+    <!-- PWA Configs -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- @asset(favicon.ico) -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <!-- Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#536dfe">
+    <!--
+        @asset(manifest.json)
+
+        @asset(icon48.png)
+        @asset(icon57.png)
+        @asset(icon72.png)
+        @asset(icon76.png)
+        @asset(icon96.png)
+        @asset(icon114.png)
+        @asset(icon120.png)
+        @asset(icon128.png)
+        @asset(icon144.png)
+        @asset(icon152.png)
+        @asset(icon167.png)
+        @asset(icon168.png)
+        @asset(icon180.png)
+        @asset(icon192.png)
+        @asset(icon512.png)
+    -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="google" content="notranslate">
+    <!-- iOS ( See: https://developer.apple.com/libraries/content/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html ) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Nimiq Safe">
+    <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
+    <link rel="apple-touch-icon" href="icon152.png">
+    <link rel="apple-touch-icon" sizes="48x48" href="icon48.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="icon57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icon72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icon76.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="icon96.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icon114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icon120.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="icon128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icon144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icon152.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icon167.png">
+    <link rel="apple-touch-icon" sizes="168x168" href="icon168.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon180.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon192.png">
+    <link rel="apple-touch-startup-image" href="icon512.png">
+    <link rel="stylesheet" href="safe.css">
+    <title>Nimiq Safe</title>
+</head>
+<body class="preparing">
+<div id="app"></div>
+<!-- @asset(moment.min.js) -->
+<script src="moment.min.js"></script>
+<script src="safe.js"></script>
+<noscript>
+    Please enable Javascript.
+    <style>
+        body > :not(noscript) {display: none !important;}
+    </style>
+</noscript>
+<!-- @asset(browser-warning.js) -->
+<script type="text/javascript" src="browser-warning.js" async></script></body>
+</html>
