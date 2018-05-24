@@ -7494,6 +7494,66 @@ class XEducationSlide extends MixinModal(XElement) {
     }
 }
 
+class XEducationSlideNOW extends XEducationSlide {
+    html() {
+        return `
+            <h1 class="modal-header">
+                Welcome to the Nimiq Open Wallet
+            </h1>
+            <div class="modal-body">
+                <div class="has-side-image">
+                    <div>
+                        <h3>What is Nimiq Open Wallet?</h3>
+                        <p>
+                        Nimiq Open Wallet, or NOW for short, is a free and open-source Nimiq wallet powered by the community.
+                        </p>
+                        <br>
+                        <p>
+                        Given that nodes in the Nimiq blockchain can run and process transactions on a web browser
+                        without the need for a browser extension, it allows to add features to the wallet to skip
+                        middleman fees like those in traditional payment processors.
+                        </p>
+                        <br>
+                        <p>
+                        The features added to the wallet allow easy integration in third party applications like games,
+                        e-comerce websites, subscription magazines, crypto currency exchanges, etc. and allow the user
+                        to request or send micro transactions and payments just by sharing a link to the wallet.
+                        </p>
+                        <br>
+                        <div class="warning">
+                            This website is not powered nor endorsed by the <a href="https://nimiq.com/#team">Nimiq development team</a>
+                            nor the official <a href="https://safe.nimiq.com">Nimiq wallet</a>.
+                        </div>
+                    </div>
+                    <div class="side-image-now"></div>
+                </div>
+
+                <button next class="center">Welcome to Nimiq Safe</button>
+
+                <div class="spacing-top -center">
+                    Click the button above to go to the next slide... or enter the keyphrase to skip it:
+                    <input type="text" placeholder="keyphrase" spellcheck="false" autocomplete="off">
+                </div>
+            </div>
+        `;
+    }
+
+    onCreate() {
+        super.onCreate();
+        this.$input = this.$('input');
+        this.$input.addEventListener('keypress', e => this._onKeypress(e));
+    }
+
+    _onKeypress(e) {
+        if (e.keyCode !== 13) return; // any key
+        if (this.$input.value === 'safe') {
+            XEducationSlides.finish();
+        } else {
+            this.$input.value = '';                
+        }
+    }
+}
+
 class XEducationSlideIntro extends XEducationSlide {
     html() {
         return `
@@ -7521,28 +7581,8 @@ class XEducationSlideIntro extends XEducationSlide {
                 </div>
 
                 <button next class="center">Nimiq is not a Bank</button>
-
-                <div class="spacing-top -center">
-                    Click the button above to go to the next slide... or enter the keyphrase to skip it:
-                    <input type="text" placeholder="keyphrase" spellcheck="false" autocomplete="off">
-                </div>
             </div>
         `;
-    }
-
-    onCreate() {
-        super.onCreate();
-        this.$input = this.$('input');
-        this.$input.addEventListener('keypress', e => this._onKeypress(e));
-    }
-
-    _onKeypress(e) {
-        if (e.keyCode !== 13) return; // any key
-        if (this.$input.value === 'safe') {
-            XEducationSlides.finish();
-        } else {
-            this.$input.value = '';                
-        }
     }
 }
 
@@ -7757,7 +7797,7 @@ class XEducationSlideLoss extends XEducationSlide {
 
 class XEducationSlides {
     static get slides() {
-        return [ XEducationSlideIntro, XEducationSlideNotABank, XEducationSlideBlockchain, XEducationSlideWhy,
+        return [ XEducationSlideNOW, XEducationSlideIntro, XEducationSlideNotABank, XEducationSlideBlockchain, XEducationSlideWhy,
             XEducationSlidePointOfNimiq, XEducationSlidePhishers, XEducationSlideScams, XEducationSlideLoss];
     }
 
