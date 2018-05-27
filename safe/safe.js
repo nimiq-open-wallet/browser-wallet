@@ -7272,24 +7272,34 @@ class XReceiveRequestLinkModal extends MixinModal(XElement) {
         return [ XIdenticon, XAddress ];
     }
 
-
-    allowsShow(address) {
-        address = dashToSpace(address);
-        return ValidationUtils.isValidAddress(address);
-    }
-
-    onShow(address) {
-        address = dashToSpace(address);
+    allowsShow(params) {
+        var address = dashToSpace(params);
+        if (!ValidationUtils.isValidAddress(address)) {
+            try {
+                var bytes = Base64.decode(params);
+                var string = LZMA.decompress(bytes);
+                address = JSON.parse(string).address;
+            } catch {
+                return false;
+            }
+            if (!ValidationUtils.isValidAddress(address)) {
+                return false;
+            }
+        }
         this.$identicon.address = address;
         this.$address.address = address;
-        this._address = address;
+        this._params = params;    
+        return true;    
+    }
+
+    onShow(params) {
     }
 
     listeners() {
         return {
             'click a.cancel': () => this.hide(),
             'click button.confirm': async () =>
-                (await XRouter.instance).replaceAside('request', 'new-transaction', `recipient=${spaceToDash(this._address)}`)
+                (await XRouter.instance).replaceAside('request', 'new-transaction', `recipient=${spaceToDash(this._params)}`)
         }
     }
 }
