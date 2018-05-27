@@ -7561,8 +7561,8 @@ class XEducationSlideNOW extends XEducationSlide {
                 <button next class="center">Welcome to Nimiq Safe</button>
 
                 <div class="spacing-top -center">
-                    Click the button above to go to the next slide... or enter the keyphrase to skip it:
-                    <input type="text" placeholder="keyphrase" spellcheck="false" autocomplete="off">
+                    Already watched the full presentation?
+                    <input type="text" placeholder="enter keyword to skip it" spellcheck="false" autocomplete="off">
                 </div>
             </div>
         `;
@@ -7818,7 +7818,7 @@ class XEducationSlideLoss extends XEducationSlide {
                 </div>
 
                 <div class="spacing-top -center">
-                    The next time you see this presentation enter <strong>"safe"</strong> for the keyphrase to skip it.
+                    The next time you see this presentation enter the keyword <strong>"safe"</strong> to skip it.
                 </div>
             </div>
         `;
