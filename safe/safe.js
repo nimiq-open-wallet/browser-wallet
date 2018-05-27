@@ -5706,6 +5706,9 @@ class XSendTransaction extends MixinRedux(XElement) {
                 </div>
                 <span error recipient class="display-none"></span>
 
+                <i name="recipientMessageTag" class="material-icons tx-recipient-tag">&#xe54e;</i>
+                <div name="recipientMessage" class="tx-recipient-message"></div>
+
                 <h3><i name="amountLock" class="material-icons tx-field-lock">&#xe897;</i> Amount</h3>
                 <div class="row">
                     <x-amount-input name="value" no-screen-keyboard enable-set-max></x-amount-input>
@@ -5842,6 +5845,16 @@ class XSendTransaction extends MixinRedux(XElement) {
         }
     }
 
+    set recipientMessage(message) {
+        if (!this._markdownConverter) {
+            this._markdownConverter = new showdown.Converter();
+            this._markdownConverter.setOption('openLinksInNewWindow', true);
+        }
+        this.$form.querySelector('div[name="recipientMessage"]').innerHTML = this._markdownConverter.makeHtml(message);
+        this.$form.querySelector('div[name="recipientMessage"]').style.display = "block";
+        this.$form.querySelector('i[name="recipientMessageTag"]').style.display = "block";
+    }
+
     _onSubmit(e) {
         e.preventDefault();
         if (!this._isValid()) return;
@@ -5858,11 +5871,14 @@ class XSendTransaction extends MixinRedux(XElement) {
         this.fee = 0;
         this.validity = '';
         this.disabled = 0;
+        this.$form.querySelector('div[name="recipientMessage"]').innerHTML = "";
+        this.$form.querySelector('div[name="recipientMessage"]').style.display = "none";
+        this.$form.querySelector('i[name="recipientMessageTag"]').style.display = "none";
         if (shouldExpand) {
             this.$expandable.expand();
         } else {
             this.$expandable.collapse();
-        }
+        }        
         this.loading = false;
     }
 
@@ -6124,7 +6140,7 @@ class XSendTransactionModal extends MixinModal(XSendTransaction) {
             var bytes = Base64.decode(params[0]);
             var string = LZMA.decompress(bytes);
             params = JSON.parse(string);
-            this._shouldExpand = true;
+            //this._shouldExpand = true;
         } catch {
             params = this._parseRouterParams(params);
             if (params.sender) {
@@ -6168,6 +6184,10 @@ class XSendTransactionModal extends MixinModal(XSendTransaction) {
 
         if (params.validity) {
             this.validity = params.validity;                        
+        }
+
+        if (params.recipientMessage) {
+            this.recipientMessage = params.recipientMessage;
         }
 
         if (params.disabled) {

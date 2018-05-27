@@ -6396,3 +6396,19 @@ iframe {
     font-size: 1.2em;
     opacity: .75;
 }
+
+.tx-recipient-tag {
+    margin-top: 32px;
+    float: right;
+}
+
+.tx-recipient-message {
+    margin-top: 30px;
+    border: 2px solid red;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.tx-recipient-message p {
+    text-align: left;
+}
