@@ -5787,6 +5787,10 @@ class XSendTransaction extends MixinRedux(XElement) {
         this.$addressInput.value = address;
     }
 
+    set amount(amount) {
+        this.$amountInput.value = amount;
+    }
+
     _onSubmit(e) {
         e.preventDefault();
         if (!this._isValid()) return;
@@ -6059,10 +6063,22 @@ class XSendTransaction extends MixinRedux(XElement) {
 
 class XSendTransactionModal extends MixinModal(XSendTransaction) {
     allowsShow(...params) {
-        params = this._parseRouterParams(params);
-
-        return (!params.sender || ValidationUtils.isValidAddress(dashToSpace(params.sender)))
-            && (!params.recipient || ValidationUtils.isValidAddress(dashToSpace(params.recipient)));
+        try {
+            var bytes = Base64.decode(params[0]);
+            var string = LZMA.decompress(bytes);
+            params = JSON.parse(string);
+        } catch {
+            params = this._parseRouterParams(params);
+            if (params.sender) {
+                params.sender = dashToSpace(params.sender);
+            }
+            if (params.recipient) {
+                params.recipient = dashToSpace(params.recipient);
+            }
+        }
+        this._params = params;
+        return (!params.sender || ValidationUtils.isValidAddress(params.sender))
+            && (!params.recipient || ValidationUtils.isValidAddress(params.recipient));
     }
 
     onShow(...params) {
@@ -6070,16 +6086,18 @@ class XSendTransactionModal extends MixinModal(XSendTransaction) {
 
         this.$amountInput.maxDecimals = document.body.classList.contains('setting-show-all-decimals') ? 5 : 2;
 
-        params = this._parseRouterParams(params);
+        params = this._params;
 
         if (params.sender) {
-            params.sender = dashToSpace(params.sender);
             this.sender = params.sender;
         }
 
         if (params.recipient) {
-            params.recipient = dashToSpace(params.recipient);
             this.recipient = params.recipient;
+        }
+
+        if (params.amount) {
+            this.amount = params.amount;
         }
 
         this.validateAllFields();
@@ -7274,21 +7292,23 @@ class XReceiveRequestLinkModal extends MixinModal(XElement) {
 
     allowsShow(params) {
         var address = dashToSpace(params);
-        if (!ValidationUtils.isValidAddress(address)) {
+        if (ValidationUtils.isValidAddress(address)) {
+            this._address = address;
+        } else{
             try {
                 var bytes = Base64.decode(params);
                 var string = LZMA.decompress(bytes);
-                address = JSON.parse(string).address;
+                address = JSON.parse(string).recipient;
             } catch {
                 return false;
             }
             if (!ValidationUtils.isValidAddress(address)) {
                 return false;
             }
+            this._params = params;            
         }
         this.$identicon.address = address;
         this.$address.address = address;
-        this._params = params;    
         return true;    
     }
 
@@ -7299,7 +7319,7 @@ class XReceiveRequestLinkModal extends MixinModal(XElement) {
         return {
             'click a.cancel': () => this.hide(),
             'click button.confirm': async () =>
-                (await XRouter.instance).replaceAside('request', 'new-transaction', `recipient=${spaceToDash(this._params)}`)
+                (await XRouter.instance).replaceAside('request', 'new-transaction', typeof this._address === "string" ? `recipient=${spaceToDash(this._address)}` : this._params)
         }
     }
 }
