@@ -5700,13 +5700,13 @@ class XSendTransaction extends MixinRedux(XElement) {
                 <x-accounts-dropdown name="sender"></x-accounts-dropdown>
                 <span error sender class="display-none"></span>
 
-                <h3><i name="recipientAddressLock" class="material-icons">&#xe897;</i>Send to <span class="link-address-book">Address book</span></h3>
+                <h3><i name="recipientAddressLock" class="material-icons tx-field-lock">&#xe897;</i> Send to <span class="link-address-book">Address book</span></h3>
                 <div class="row">
                     <x-address-input class="multiline" name="recipient"></x-address-input>
                 </div>
                 <span error recipient class="display-none"></span>
 
-                <h3><i name="amountLock" class="material-icons">&#xe897;</i>Amount</h3>
+                <h3><i name="amountLock" class="material-icons tx-field-lock">&#xe897;</i> Amount</h3>
                 <div class="row">
                     <x-amount-input name="value" no-screen-keyboard enable-set-max></x-amount-input>
                 </div>
@@ -5716,7 +5716,7 @@ class XSendTransaction extends MixinRedux(XElement) {
                     <h3 expandable-trigger>Advanced Settings</h3>
                     <div expandable-content>
                         <div class="extra-data-section">
-                            <h3><i name="messageLock" class="material-icons">&#xe897;</i>Message</h3>
+                            <h3><i name="messageLock" class="material-icons tx-field-lock">&#xe897;</i> Message</h3>
                             <div class="row">
                                 <x-extra-data-input name="extraData" max-bytes="64"></x-extra-data-input>
                             </div>
@@ -5728,7 +5728,7 @@ class XSendTransaction extends MixinRedux(XElement) {
                         </div>
                         <span error fees class="display-none"></span>
 
-                        <h3><i name="validityLock" class="material-icons">&#xe897;</i>Valid from</h3>
+                        <h3><i name="validityLock" class="material-icons tx-field-lock">&#xe897;</i> Valid from</h3>
                         <small>Only required for offline transaction creation</small>
                         <small>Setting a wrong valid-from height can invalidate your transaction!</small>
                         <div class="row">
@@ -5823,13 +5823,13 @@ class XSendTransaction extends MixinRedux(XElement) {
     set disabled(flags) {
         if (Number.isInteger(flags)) {
             this.$addressInput.disabled = flags & 1;
-            this.$form.querySelector('i[name="recipientAddressLock"]').style.display = flags & 1 ? "block" : "none";
+            this.$form.querySelector('i[name="recipientAddressLock"]').style.display = flags & 1 ? "inline-block" : "none";
             this.$amountInput.disabled = flags & 2;
-            this.$form.querySelector('i[name="amountLock"]').style.display = flags & 2 ? "block" : "none";
+            this.$form.querySelector('i[name="amountLock"]').style.display = flags & 2 ? "inline-block" : "none";
             this.$extraDataInput.disabled = flags & 4;
-            this.$form.querySelector('i[name="messageLock"]').style.display = flags & 4 ? "block" : "none";
+            this.$form.querySelector('i[name="messageLock"]').style.display = flags & 4 ? "inline-block" : "none";
             this.$form.querySelector('input[name="validityStartHeight"]').disabled = flags & 8;
-            this.$form.querySelector('i[name="validityLock"]').style.display = flags & 8 ? "block" : "none";
+            this.$form.querySelector('i[name="validityLock"]').style.display = flags & 8 ? "inline-block" : "none";
         } else {
             this.$address.disabled = false;
             this.$form.querySelector('i[name="recipientAddressLock"]').style.display = "none";

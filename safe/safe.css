@@ -6391,3 +6391,8 @@ body[no-local-storage]::after {
 iframe {
     display: none;
 }
+
+.tx-field-lock {
+    font-size: 1.2em;
+    opacity: .75;
+}
