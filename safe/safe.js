@@ -5045,7 +5045,7 @@ class XAddressInput extends XInput {
                 <x-identicon></x-identicon>
                 <span class="prefix">NQ</span>
                 <form action="/">
-                    <input type="text" placeholder="Recipient Address" spellcheck="false" autocomplete="off" disabled>
+                    <input type="text" placeholder="Recipient Address" spellcheck="false" autocomplete="off">
                 </form>
             </div>
         `
@@ -5074,6 +5074,10 @@ class XAddressInput extends XInput {
         // Have to define setter as we have defined the getter as well, but we'll just call the setter of super.
         // This will also trigger _onValueChanged
         super.value = value;
+    }
+
+    set disabled(value) {
+        this.$input.disabled = value;
     }
 
     _onValueChanged() {
@@ -5268,7 +5272,7 @@ class XAmountInput extends XInput {
         return `
             <form>
                 <x-currency-nim>
-                    <input placeholder="0.00" type="number" min="0" disabled>
+                    <input placeholder="0.00" type="number" min="0">
                     <span class="ticker">NIM</span>
                     <button class="small secondary set-max">Max</button>
                 </x-currency-nim>
@@ -5321,6 +5325,10 @@ class XAmountInput extends XInput {
 
     get maxDecimals() {
         return this._maxDecimals;
+    }
+
+    set disabled(value) {
+        this.$input.disabled = value;
     }
 
     _initScreenKeyboard() {
@@ -5555,7 +5563,7 @@ class XExtraDataInput extends XInput {
     html() {
         return `
             <form>
-                <input type="text" placeholder="Message" disabled>
+                <input type="text" placeholder="Message">
                 <div class="x-extra-data-info">
                     <span class="x-extra-data-help"></span>
                     <span class="x-extra-data-remaining"></span>
@@ -5584,6 +5592,10 @@ class XExtraDataInput extends XInput {
         this.value = '';
         this._maxBytes = maxBytes;
         this._setRemaining();
+    }
+
+    set disabled(value) {
+        this.$input.disabled = value;
     }
 
     /** @overwrites */
@@ -5688,13 +5700,13 @@ class XSendTransaction extends MixinRedux(XElement) {
                 <x-accounts-dropdown name="sender"></x-accounts-dropdown>
                 <span error sender class="display-none"></span>
 
-                <h3><i class="material-icons">&#xe897;</i>Send to <span class="link-address-book">Address book</span></h3>
+                <h3><i name="recipientAddressLock" class="material-icons">&#xe897;</i>Send to <span class="link-address-book">Address book</span></h3>
                 <div class="row">
                     <x-address-input class="multiline" name="recipient"></x-address-input>
                 </div>
                 <span error recipient class="display-none"></span>
 
-                <h3><i class="material-icons">&#xe897;</i>Amount</h3>
+                <h3><i name="amountLock" class="material-icons">&#xe897;</i>Amount</h3>
                 <div class="row">
                     <x-amount-input name="value" no-screen-keyboard enable-set-max></x-amount-input>
                 </div>
@@ -5704,7 +5716,7 @@ class XSendTransaction extends MixinRedux(XElement) {
                     <h3 expandable-trigger>Advanced Settings</h3>
                     <div expandable-content>
                         <div class="extra-data-section">
-                            <h3><i class="material-icons">&#xe897;</i>Message</h3>
+                            <h3><i name="messageLock" class="material-icons">&#xe897;</i>Message</h3>
                             <div class="row">
                                 <x-extra-data-input name="extraData" max-bytes="64"></x-extra-data-input>
                             </div>
@@ -5716,11 +5728,11 @@ class XSendTransaction extends MixinRedux(XElement) {
                         </div>
                         <span error fees class="display-none"></span>
 
-                        <h3><i class="material-icons">&#xe897;</i>Valid from</h3>
+                        <h3><i name="validityLock" class="material-icons">&#xe897;</i>Valid from</h3>
                         <small>Only required for offline transaction creation</small>
                         <small>Setting a wrong valid-from height can invalidate your transaction!</small>
                         <div class="row">
-                            <input name="validityStartHeight" validity-start placeholder="0" type="number" min="0" step="1" disabled>
+                            <input name="validityStartHeight" validity-start placeholder="0" type="number" min="0" step="1">
                         </div>
                         <span error start-height class="display-none"></span>
                     </div>
@@ -5808,6 +5820,28 @@ class XSendTransaction extends MixinRedux(XElement) {
         this.$form.querySelector('input[name="validityStartHeight"]').value = validity;
     }
 
+    set disabled(flags) {
+        if (Number.isInteger(flags)) {
+            this.$addressInput.disabled = flags & 1;
+            this.$form.querySelector('i[name="recipientAddressLock"]').style.display = flags & 1 ? "block" : "none";
+            this.$amountInput.disabled = flags & 2;
+            this.$form.querySelector('i[name="amountLock"]').style.display = flags & 2 ? "block" : "none";
+            this.$extraDataInput.disabled = flags & 4;
+            this.$form.querySelector('i[name="messageLock"]').style.display = flags & 4 ? "block" : "none";
+            this.$form.querySelector('input[name="validityStartHeight"]').disabled = flags & 8;
+            this.$form.querySelector('i[name="validityLock"]').style.display = flags & 8 ? "block" : "none";
+        } else {
+            this.$address.disabled = false;
+            this.$form.querySelector('i[name="recipientAddressLock"]').style.display = "none";
+            this.$amountInput.disabled = false;
+            this.$form.querySelector('i[name="amountLock"]').style.display = "none";            
+            this.$extraDataInput.disabled = false;
+            this.$form.querySelector('i[name="messageLock"]').style.display = "none";
+            this.$form.querySelector('input[name="validityStartHeight"]').disabled = false;
+            this.$form.querySelector('i[name="validityLock"]').style.display = "none";
+        }
+    }
+
     _onSubmit(e) {
         e.preventDefault();
         if (!this._isValid()) return;
@@ -5818,11 +5852,12 @@ class XSendTransaction extends MixinRedux(XElement) {
     }
 
     clear(shouldExpand = false) {
-        this.$addressInput.value = '';
-        this.$amountInput.value = '';
-        this.$extraDataInput.value = '';
-        this.$feeInput.value = 0;
-        this.$form.querySelector('input[name="validityStartHeight"]').value = '';
+        this.recipient = '';
+        this.amount = '';
+        this.extraData = '';
+        this.fee = 0;
+        this.validity = '';
+        this.disabled = 0;
         if (shouldExpand) {
             this.$expandable.expand();
         } else {
@@ -6133,6 +6168,10 @@ class XSendTransactionModal extends MixinModal(XSendTransaction) {
 
         if (params.validity) {
             this.validity = params.validity;                        
+        }
+
+        if (params.disabled) {
+            this.disabled = params.disabled;                        
         }
 
         this.validateAllFields();
