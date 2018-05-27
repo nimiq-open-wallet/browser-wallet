@@ -5045,7 +5045,7 @@ class XAddressInput extends XInput {
                 <x-identicon></x-identicon>
                 <span class="prefix">NQ</span>
                 <form action="/">
-                    <input type="text" placeholder="Recipient Address" spellcheck="false" autocomplete="off">
+                    <input type="text" placeholder="Recipient Address" spellcheck="false" autocomplete="off" disabled>
                 </form>
             </div>
         `
@@ -5268,7 +5268,7 @@ class XAmountInput extends XInput {
         return `
             <form>
                 <x-currency-nim>
-                    <input placeholder="0.00" type="number" min="0">
+                    <input placeholder="0.00" type="number" min="0" disabled>
                     <span class="ticker">NIM</span>
                     <button class="small secondary set-max">Max</button>
                 </x-currency-nim>
@@ -5424,7 +5424,12 @@ class XFeeInput extends XInput {
     }
 
     set value(value) {
-        super.value = Number(value || 0); // triggers _onValueChanged
+        if (typeof value === "string") {
+            this._clickedLabel(value);
+            this._onValueChanged();
+        } else {
+            super.value = Number(value || 0); // triggers _onValueChanged
+        }
     }
 
     get value() {
@@ -5550,7 +5555,7 @@ class XExtraDataInput extends XInput {
     html() {
         return `
             <form>
-                <input type="text" placeholder="Message">
+                <input type="text" placeholder="Message" disabled>
                 <div class="x-extra-data-info">
                     <span class="x-extra-data-help"></span>
                     <span class="x-extra-data-remaining"></span>
@@ -5683,13 +5688,13 @@ class XSendTransaction extends MixinRedux(XElement) {
                 <x-accounts-dropdown name="sender"></x-accounts-dropdown>
                 <span error sender class="display-none"></span>
 
-                <h3>Send to <span class="link-address-book">Address book</span></h3>
+                <h3><i class="material-icons">&#xe897;</i>Send to <span class="link-address-book">Address book</span></h3>
                 <div class="row">
                     <x-address-input class="multiline" name="recipient"></x-address-input>
                 </div>
                 <span error recipient class="display-none"></span>
 
-                <h3>Amount</h3>
+                <h3><i class="material-icons">&#xe897;</i>Amount</h3>
                 <div class="row">
                     <x-amount-input name="value" no-screen-keyboard enable-set-max></x-amount-input>
                 </div>
@@ -5699,7 +5704,7 @@ class XSendTransaction extends MixinRedux(XElement) {
                     <h3 expandable-trigger>Advanced Settings</h3>
                     <div expandable-content>
                         <div class="extra-data-section">
-                            <h3>Message</h3>
+                            <h3><i class="material-icons">&#xe897;</i>Message</h3>
                             <div class="row">
                                 <x-extra-data-input name="extraData" max-bytes="64"></x-extra-data-input>
                             </div>
@@ -5711,11 +5716,11 @@ class XSendTransaction extends MixinRedux(XElement) {
                         </div>
                         <span error fees class="display-none"></span>
 
-                        <h3>Valid from</h3>
+                        <h3><i class="material-icons">&#xe897;</i>Valid from</h3>
                         <small>Only required for offline transaction creation</small>
                         <small>Setting a wrong valid-from height can invalidate your transaction!</small>
                         <div class="row">
-                            <input name="validityStartHeight" validity-start placeholder="0" type="number" min="0" step="1">
+                            <input name="validityStartHeight" validity-start placeholder="0" type="number" min="0" step="1" disabled>
                         </div>
                         <span error start-height class="display-none"></span>
                     </div>
@@ -5791,6 +5796,18 @@ class XSendTransaction extends MixinRedux(XElement) {
         this.$amountInput.value = amount;
     }
 
+    set extraData(extraData) {
+        this.$extraDataInput.value = extraData;
+    }
+
+    set fee(fee) {
+        this.$feeInput.value = fee;
+    }
+
+    set validity(validity) {
+        this.$form.querySelector('input[name="validityStartHeight"]').value = validity;
+    }
+
     _onSubmit(e) {
         e.preventDefault();
         if (!this._isValid()) return;
@@ -5800,13 +5817,17 @@ class XSendTransaction extends MixinRedux(XElement) {
         this.fire('x-send-transaction', tx);
     }
 
-    clear() {
+    clear(shouldExpand = false) {
         this.$addressInput.value = '';
         this.$amountInput.value = '';
         this.$extraDataInput.value = '';
         this.$feeInput.value = 0;
         this.$form.querySelector('input[name="validityStartHeight"]').value = '';
-        this.$expandable.collapse();
+        if (shouldExpand) {
+            this.$expandable.expand();
+        } else {
+            this.$expandable.collapse();
+        }
         this.loading = false;
     }
 
@@ -6063,10 +6084,12 @@ class XSendTransaction extends MixinRedux(XElement) {
 
 class XSendTransactionModal extends MixinModal(XSendTransaction) {
     allowsShow(...params) {
+        this._shouldExpand = false;
         try {
             var bytes = Base64.decode(params[0]);
             var string = LZMA.decompress(bytes);
             params = JSON.parse(string);
+            this._shouldExpand = true;
         } catch {
             params = this._parseRouterParams(params);
             if (params.sender) {
@@ -6082,7 +6105,7 @@ class XSendTransactionModal extends MixinModal(XSendTransaction) {
     }
 
     onShow(...params) {
-        this.clear();
+        this.clear(this._shouldExpand);
 
         this.$amountInput.maxDecimals = document.body.classList.contains('setting-show-all-decimals') ? 5 : 2;
 
@@ -6098,6 +6121,18 @@ class XSendTransactionModal extends MixinModal(XSendTransaction) {
 
         if (params.amount) {
             this.amount = params.amount;
+        }
+
+        if (params.extraData) {
+            this.extraData = params.extraData;            
+        }
+
+        if (params.fee) {
+            this.fee = params.fee;            
+        }
+
+        if (params.validity) {
+            this.validity = params.validity;                        
         }
 
         this.validateAllFields();
