@@ -5706,7 +5706,7 @@ class XSendTransaction extends MixinRedux(XElement) {
                 </div>
                 <span error recipient class="display-none"></span>
 
-                <i name="recipientMessageTag" class="material-icons tx-recipient-tag">&#xe54e;</i>
+                <h3>Message from recipient</h3>
                 <div name="recipientMessage" class="tx-recipient-message"></div>
 
                 <h3><i name="amountLock" class="material-icons tx-field-lock">&#xe897;</i> Amount</h3>
@@ -5852,7 +5852,6 @@ class XSendTransaction extends MixinRedux(XElement) {
         }
         this.$form.querySelector('div[name="recipientMessage"]').innerHTML = this._markdownConverter.makeHtml(message);
         this.$form.querySelector('div[name="recipientMessage"]').style.display = "block";
-        this.$form.querySelector('i[name="recipientMessageTag"]').style.display = "block";
     }
 
     _onSubmit(e) {
@@ -5873,7 +5872,6 @@ class XSendTransaction extends MixinRedux(XElement) {
         this.disabled = 0;
         this.$form.querySelector('div[name="recipientMessage"]').innerHTML = "";
         this.$form.querySelector('div[name="recipientMessage"]').style.display = "none";
-        this.$form.querySelector('i[name="recipientMessageTag"]').style.display = "none";
         if (shouldExpand) {
             this.$expandable.expand();
         } else {
@@ -7427,6 +7425,9 @@ class XCreateRequestLinkModal extends MixinModal(XElement) {
     html() {
         return `
             <div class="modal-header">
+                <x-popup-menu left-align>
+                    <button prepared><i class="material-icons">unarchive</i> Prepare custom transaction</button>
+                </x-popup-menu>
                 <i x-modal-close class="material-icons">close</i>
                 <h2>Transaction Request</h2>
             </div>
@@ -7449,7 +7450,7 @@ class XCreateRequestLinkModal extends MixinModal(XElement) {
     }
 
     children() {
-        return [ XAddress, XAccountsDropdown ];
+        return [ XPopupMenu, XAddress, XAccountsDropdown ];
     }
 
     onCreate() {
@@ -7464,7 +7465,8 @@ class XCreateRequestLinkModal extends MixinModal(XElement) {
                 title: 'Nimiq Transaction Request',
                 text: 'Please send me Nimiq using this link:',
                 url: this._link
-            })
+            }),
+            'click button[prepared]': () => this.fire('x-receive-prepared-transaction')
         }
     }
 
@@ -7480,6 +7482,81 @@ class XCreateRequestLinkModal extends MixinModal(XElement) {
         this._link = `${ Config.offlinePackaged ? 'https://safe.nimiq.com' : this.attributes.dataXRoot }/#_request/${spaceToDash(address)}_`;
 
         $requestLink.textContent = this._link;
+    }
+}
+
+class XCreatePreparedTransactionModal extends MixinModal(XElement) {
+    html() {
+        return `
+            <div class="modal-header">
+                <i x-modal-close class="material-icons">close</i>
+                <h2>New Custom Transaction Request</h2>
+            </div>
+            <form class="modal-body">
+                <h3><i name="recipientLock" class="material-icons tx-field-lock">&#xe897;</i><i name="recipientLock" class="material-icons tx-field-lock">&#xe641;</i> Receive in</h3>
+                <x-accounts-dropdown name="sender"></x-accounts-dropdown>
+                <span error sender class="display-none"></span>
+
+                <h3>Message from recipient</h3>
+                <small>This message will be seen by the transaction sender, although it's not required</small>
+                <small>The product or service description can be put here</small>
+                <textarea name="recipientMessage" class="tx-recipient-message tx-recipient-message-editor"></textarea>
+
+                <h3><i name="amountLock" class="material-icons tx-field-lock">&#xe897;</i> Amount</h3>
+                <div class="row">
+                    <x-amount-input name="value" no-screen-keyboard enable-set-max></x-amount-input>
+                </div>
+                <span error amount class="display-none"></span>
+
+                <x-expandable advanced-settings transparent>
+                    <h3 expandable-trigger>Advanced Settings</h3>
+                    <div expandable-content>
+                        <div class="extra-data-section">
+                            <h3><i name="messageLock" class="material-icons tx-field-lock">&#xe897;</i> Message to receive</h3>
+                            <div class="row">
+                                <x-extra-data-input name="extraData" max-bytes="64"></x-extra-data-input>
+                            </div>
+                        </div>
+
+                        <h3>Suggested fee</h3>
+                        <div class="row">
+                            <x-fee-input name="fee" max-sats="2"></x-fee-input>
+                        </div>
+                        <span error fees class="display-none"></span>
+
+                        <h3><i name="validityLock" class="material-icons tx-field-lock">&#xe897;</i> Valid from</h3>
+                        <small>Only required for offline transaction creation</small>
+                        <small>Setting a wrong valid-from height can invalidate your transaction!</small>
+                        <div class="row">
+                            <input name="validityStartHeight" validity-start placeholder="0" type="number" min="0" step="1">
+                        </div>
+                        <span error start-height class="display-none"></span>
+                    </div>
+                </x-expandable>
+
+                <div class="center row">
+                    <button send>Send</button>
+                </div>                
+            </form>
+        `
+    }
+
+    children() {
+        return [ XAccountsDropdown, XAmountInput, XFeeInput, XExpandable, XExtraDataInput ];
+    }
+    
+    onCreate() {
+        this.$textarea = this.$('textarea');
+
+        super.onCreate();
+    }
+
+    styles() {
+        return [ ...super.styles(), 'x-send-transaction' ];
+    }
+
+    allowsHide() {
+        return confirm("Close the transaction window?");
     }
 }
 
@@ -9115,6 +9192,7 @@ class XSafe extends MixinRedux(XElement) {
             'x-send-transaction': this._signTransaction.bind(this),
             'x-send-prepared-transaction': this._clickedPreparedTransaction.bind(this),
             'x-send-prepared-transaction-confirm': this._sendTransactionNow.bind(this),
+            'x-receive-prepared-transaction': this._clickedReceivePreparedTransaction.bind(this),
             'x-account-modal-new-tx': this._newTransactionFrom.bind(this),
             'x-upgrade-account': this._clickedAccountUpgrade.bind(this),
             'x-account-modal-backup-words': this._clickedAccountBackupWords.bind(this),
@@ -9212,6 +9290,10 @@ class XSafe extends MixinRedux(XElement) {
 
     _clickedReceive() {
         XCreateRequestLinkModal.show();
+    }
+
+    _clickedReceivePreparedTransaction() {
+        XCreatePreparedTransactionModal.show();
     }
 
     async _signTransaction(tx) {

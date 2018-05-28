@@ -4130,7 +4130,6 @@ x-extra-data-input .x-extra-data-help {
     display: none;
 }
 
-
 .x-send-transaction {
     width: 600px;
     box-sizing: content-box;
@@ -4226,7 +4225,7 @@ x-extra-data-input .x-extra-data-help {
     font-size: 30px !important;
 }
 
-.x-send-transaction [advanced-settings] small {
+.x-send-transaction small {
     display: block;
     text-align: left;
     margin-top: -5px;
@@ -6403,10 +6402,19 @@ iframe {
 }
 
 .tx-recipient-message {
-    margin-top: 30px;
+    margin-top: 7px;
     border: 2px solid red;
-    border-radius: 12px;
+    border-radius: 6px;
     padding: 10px;
+    height: 7em;
+    width: 100%;
+    font-size: 11pt;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+.tx-recipient-message-editor {
+    font-family: monospace;
 }
 
 .tx-recipient-message p {
