@@ -7493,23 +7493,19 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                 <h2>New Custom Transaction Request</h2>
             </div>
             <form class="modal-body">
-                <small>Check the padlock (<i class="material-icons tx-field-lock">&#xe897;</i><input type="checkbox" disabled checked>) next to the field so it can't be modified by the sender.</small>
-
-                <h3>Receive in (<i class="material-icons tx-field-lock">&#xe897;</i><input name="recipientLock" type="checkbox" checked>)</h3>
+                <h3>Receive in<span class="tx-field-lock-container"><i class="material-icons tx-field-lock">&#xe897;</i><input name="recipientLock" type="checkbox" checked></span></h3>
                 <x-accounts-dropdown name="sender"></x-accounts-dropdown>
                 <span error sender class="display-none"></span>
 
-                <h3>Message from recipient</h3>
-                <small>Markdown-formatted message that will be seen by the transaction sender.</small>
-                <small>For instance the product or service description can be put here.</small>
                 <nav class="editor">
                     <a name="write">Write</a>
                     <a name="preview">Preview</a>
                 </nav>
-                <textarea name="recipientMessageEditor" class="tx-recipient-message tx-recipient-message-editor"></textarea>
+                <h3>Message from recipient</h3>
+                <textarea name="recipientMessageEditor" class="tx-recipient-message tx-recipient-message-editor tx-recipient-message-editor-placeholer">Markdown-formatted message to be shown to the transaction sender.\nThe product or service description can be put here.</textarea>
                 <div name="recipientMessagePreview" class="tx-recipient-message tx-recipient-message-preview"></div>
 
-                <h3>Amount (<i class="material-icons tx-field-lock">&#xe897;</i><input name="amountLock" type="checkbox" checked>)</h3>
+                <h3>Amount<span class="tx-field-lock-container"><i class="material-icons tx-field-lock">&#xe897;</i><input name="amountLock" type="checkbox" checked></span></h3>
                 <div class="row">
                     <x-amount-input name="value" no-screen-keyboard></x-amount-input>
                 </div>
@@ -7519,7 +7515,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                     <h3 expandable-trigger>Advanced Settings</h3>
                     <div expandable-content>
                         <div class="extra-data-section">
-                            <h3>Message to receive (<i class="material-icons tx-field-lock">&#xe897;</i><input name="messageLock" type="checkbox">)</h3>
+                            <h3>Message to receive<span class="tx-field-lock-container"><i class="material-icons tx-field-lock">&#xe897;</i><input name="messageLock" type="checkbox"></span></h3>
                             <div class="row">
                                 <x-extra-data-input name="extraData" max-bytes="64"></x-extra-data-input>
                             </div>
@@ -7531,9 +7527,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                         </div>
                         <span error fees class="display-none"></span>
 
-                        <h3>Valid from (<i class="material-icons tx-field-lock">&#xe897;</i><input name="validityLock" type="checkbox">)</h3>
-                        <small>Only required for offline transaction creation</small>
-                        <small>Setting a wrong valid-from height can invalidate your transaction!</small>
+                        <h3>Valid from <span class="tx-field-lock-container"><i class="material-icons tx-field-lock">&#xe897;</i><input name="validityLock" type="checkbox"></span></h3>
                         <div class="row">
                             <input name="validityStartHeight" validity-start placeholder="0" type="number" min="0" step="1">
                         </div>
@@ -7543,7 +7537,8 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
 
                 <div class="center row">
                     <button send>Generate</button>
-                </div>                
+                    <small class="footnote">Check the padlock<i class="material-icons tx-field-lock">&#xe897;</i><input type="checkbox" disabled checked>) for those fields that can't be modified by the sender.</small>
+                </div>                   
             </form>
         `
     }
@@ -7560,7 +7555,13 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         this.$write = this.$form.querySelector('nav a[name="write"]');
         this.$preview = this.$form.querySelector('nav a[name="preview"]');
 
-        this.$form.addEventListener("submit", this._generateLink.bind(this));
+        this.$form.addEventListener('submit', e => this._onSubmit(e));
+        var el = this.$recipientMessageEditor;
+        this.$recipientMessageEditor.addEventListener('click', e => {
+            el.classList.remove("tx-recipient-message-editor-placeholer");
+            el.value = "";
+            el.removeEventListener('click', this);
+        });
         this.$write.addEventListener('click', this._writeClicked.bind(this));
         this.$preview.addEventListener('click', this._previewClicked.bind(this));
 
@@ -7580,14 +7581,35 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         return confirm("Close the transaction window?");
     }
 
-    _generateLink(e) {
+    _onSubmit(e) {
+        alert("!!!");
+
         e.preventDefault();
-    
-        /* do what you want with the form */
-    
-        // You must return false to prevent the default form behavior
-        return false;
+        //if (!this._isValid()) return;
+
+        const requestData = this._getFormData(this.$form);
+
+        alert(JSON.stringify(requestData));
+        //tx.network = Config.network;
+        //this.fire('x-send-transaction', tx);
+
+        /*
+        var data = {
+            'recipient': 'NQ40 7G2N J5FN 51MV 95DG FCQ9 ET11 DVMV QR1F',
+            'amount': 100,
+            'recipientMessage': '![company logo](https://i.imgur.com/oagFtxb.png)<br/>This is the description of the company and/or product.<br/>For more details visit our [website](https://example.com) or contact us at [email@example.com](mailto:email@example.com)',
+            'extraData': 'Data in the extended transaction',
+            'fee': 'low',
+            'disabled': 3
+        };
+        */
     }
+
+    _getFormData(form) {
+        const formData = {};
+        form.querySelectorAll('input').forEach(i => formData[i.getAttribute('name')] = i.value);
+        return formData;
+    }    
 
     _writeClicked(e) {
         this.$recipientMessageEditor.style.display = "block";
@@ -7607,6 +7629,16 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         this.$write.classList.remove("current");
         this.$preview.classList.add("current");
     }
+
+    _isValid() {
+        // console.log(
+        //     "sender", this._validSender,
+        //     "recipient", this._validRecipient,
+        //     "amountandFees", this._validAmountAndFees,
+        //     "validityStartHeight", this._validValidityStartHeight
+        // );
+        return this._validRecipient && this._validAmountAndFees && this._validValidityStartHeight;
+    }    
 }
 
 class XSendTransactionOfflineModal extends MixinModal(XElement) {

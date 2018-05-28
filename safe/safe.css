@@ -6053,7 +6053,8 @@ x-total-amount {
 
 nav.editor {
     margin-bottom: 1px;
-    float: left;
+    float: right;
+    margin-top: 30px;
 }
 
 nav.editor a {
@@ -6440,10 +6441,26 @@ iframe {
     font-family: monospace;
 }
 
+.tx-recipient-message-editor-placeholer {
+    opacity: 0.5;
+}
+
 .tx-recipient-message p {
     text-align: left;
 }
 
 .tx-recipient-message-preview {
     border: 2px solid #8600eb;
+}
+
+.x-send-transaction .no-margin-top {
+    margin-top: 0;
+}
+
+.x-send-transaction .footnote {
+    margin-top: 15px;
+}
+
+.tx-field-lock-container {
+    float: right;
 }
