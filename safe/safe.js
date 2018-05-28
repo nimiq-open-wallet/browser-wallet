@@ -7552,6 +7552,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
     
     onCreate() {
         this.$form = this.$('form');
+        this.$nav = this.$('nav');
         this.$recipientMessageEditor = this.$form.querySelector('textarea[name="recipientMessageEditor"]');
         this.$recipientMessagePreview = this.$form.querySelector('div[name="recipientMessagePreview"]');
         this.$write = this.$form.querySelector('nav a[name="write"]');
@@ -7562,6 +7563,8 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
 
         this.$recipientMessageEditor.style.display = "block";
         this.$recipientMessagePreview.style.display = "none";
+
+        this.$write.classList.add("current");
 
         super.onCreate();
     }
@@ -7577,6 +7580,8 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
     _writeClicked(e) {
         this.$recipientMessageEditor.style.display = "block";
         this.$recipientMessagePreview.style.display = "none";
+        this.$write.classList.add("current");
+        this.$preview.classList.remove("current");
     }
 
     _previewClicked(e) {
@@ -7587,6 +7592,8 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         this.$recipientMessagePreview.innerHTML = this._markdownConverter.makeHtml(this.$recipientMessageEditor.value);
         this.$recipientMessageEditor.style.display = "none";
         this.$recipientMessagePreview.style.display = "block";
+        this.$write.classList.remove("current");
+        this.$preview.classList.add("current");
     }
 }
 

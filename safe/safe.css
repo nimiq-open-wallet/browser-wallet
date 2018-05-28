@@ -6052,24 +6052,26 @@ x-total-amount {
 }
 
 nav.editor {
-    display: inline-block;
-    margin: 18px 1em 0 0.5em;
-    text-transform: uppercase;
-    font-size: 14px;
-    letter-spacing: 0.16em;
-    padding: 0 4px 15px;
-    font-weight: bold;
-    opacity: 0.6;
-    line-height: 16px;
+    margin-bottom: 1px;
     float: left;
 }
 
 nav.editor a {
-    margin: 20px 0 0 0.5em;
+    display: inline-block;
+    margin-left: 0.5em;
+    text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 1px;
-    padding: 0 4px 14px;
+    padding: 0 4px 4px;
+    color: #3b3b3b;
+    font-weight: bold;
+    opacity: 0.6;
     line-height: 15px;
+}
+
+nav.editor a.current {
+    opacity: 1;
+    border-bottom: 2px solid var(--success-color);
 }
 
 nav.main {
