@@ -7542,7 +7542,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                 </x-expandable>
 
                 <div class="center row">
-                    <button send>Send</button>
+                    <button send>Generate</button>
                 </div>                
             </form>
         `
@@ -7560,6 +7560,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         this.$write = this.$form.querySelector('nav a[name="write"]');
         this.$preview = this.$form.querySelector('nav a[name="preview"]');
 
+        this.$form.addEventListener("submit", this._generateLink.bind(this));
         this.$write.addEventListener('click', this._writeClicked.bind(this));
         this.$preview.addEventListener('click', this._previewClicked.bind(this));
 
@@ -7577,6 +7578,15 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
 
     allowsHide() {
         return confirm("Close the transaction window?");
+    }
+
+    _generateLink(e) {
+        e.preventDefault();
+    
+        /* do what you want with the form */
+    
+        // You must return false to prevent the default form behavior
+        return false;
     }
 
     _writeClicked(e) {
