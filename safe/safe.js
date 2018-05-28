@@ -7493,7 +7493,9 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                 <h2>New Custom Transaction Request</h2>
             </div>
             <form class="modal-body">
-                <h3><i name="recipientLock" class="material-icons tx-field-lock">&#xe897;</i><i name="recipientLock" class="material-icons tx-field-lock">&#xe641;</i> Receive in</h3>
+                <small>Check the padlock (<i class="material-icons tx-field-lock">&#xe897;</i><input type="checkbox" disabled checked>) next to the field so it can't be modified by the sender.</small>
+
+                <h3>Receive in (<i class="material-icons tx-field-lock">&#xe897;</i><input name="recipientLock" type="checkbox" checked>)</h3>
                 <x-accounts-dropdown name="sender"></x-accounts-dropdown>
                 <span error sender class="display-none"></span>
 
@@ -7507,9 +7509,9 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                 <textarea name="recipientMessageEditor" class="tx-recipient-message tx-recipient-message-editor"></textarea>
                 <div name="recipientMessagePreview" class="tx-recipient-message tx-recipient-message-preview"></div>
 
-                <h3><i name="amountLock" class="material-icons tx-field-lock">&#xe897;</i> Amount</h3>
+                <h3>Amount (<i class="material-icons tx-field-lock">&#xe897;</i><input name="amountLock" type="checkbox" checked>)</h3>
                 <div class="row">
-                    <x-amount-input name="value" no-screen-keyboard enable-set-max></x-amount-input>
+                    <x-amount-input name="value" no-screen-keyboard></x-amount-input>
                 </div>
                 <span error amount class="display-none"></span>
 
@@ -7517,7 +7519,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                     <h3 expandable-trigger>Advanced Settings</h3>
                     <div expandable-content>
                         <div class="extra-data-section">
-                            <h3><i name="messageLock" class="material-icons tx-field-lock">&#xe897;</i> Message to receive</h3>
+                            <h3>Message to receive (<i class="material-icons tx-field-lock">&#xe897;</i><input name="messageLock" type="checkbox">)</h3>
                             <div class="row">
                                 <x-extra-data-input name="extraData" max-bytes="64"></x-extra-data-input>
                             </div>
@@ -7529,7 +7531,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                         </div>
                         <span error fees class="display-none"></span>
 
-                        <h3><i name="validityLock" class="material-icons tx-field-lock">&#xe897;</i> Valid from</h3>
+                        <h3>Valid from (<i class="material-icons tx-field-lock">&#xe897;</i><input name="validityLock" type="checkbox">)</h3>
                         <small>Only required for offline transaction creation</small>
                         <small>Setting a wrong valid-from height can invalidate your transaction!</small>
                         <div class="row">
