@@ -7498,9 +7498,14 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                 <span error sender class="display-none"></span>
 
                 <h3>Message from recipient</h3>
-                <small>This message will be seen by the transaction sender, although it's not required</small>
-                <small>The product or service description can be put here</small>
-                <textarea name="recipientMessage" class="tx-recipient-message tx-recipient-message-editor"></textarea>
+                <small>Markdown-formatted message that will be seen by the transaction sender.</small>
+                <small>For instance the product or service description can be put here.</small>
+                <nav class="editor">
+                    <a name="write">Write</a>
+                    <a name="preview">Preview</a>
+                </nav>
+                <textarea name="recipientMessageEditor" class="tx-recipient-message tx-recipient-message-editor"></textarea>
+                <div name="recipientMessagePreview" class="tx-recipient-message tx-recipient-message-preview"></div>
 
                 <h3><i name="amountLock" class="material-icons tx-field-lock">&#xe897;</i> Amount</h3>
                 <div class="row">
@@ -7546,7 +7551,17 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
     }
     
     onCreate() {
-        this.$textarea = this.$('textarea');
+        this.$form = this.$('form');
+        this.$recipientMessageEditor = this.$form.querySelector('textarea[name="recipientMessageEditor"]');
+        this.$recipientMessagePreview = this.$form.querySelector('div[name="recipientMessagePreview"]');
+        this.$write = this.$form.querySelector('nav a[name="write"]');
+        this.$preview = this.$form.querySelector('nav a[name="preview"]');
+
+        this.$write.addEventListener('click', this._writeClicked.bind(this));
+        this.$preview.addEventListener('click', this._previewClicked.bind(this));
+
+        this.$recipientMessageEditor.style.display = "block";
+        this.$recipientMessagePreview.style.display = "none";
 
         super.onCreate();
     }
@@ -7557,6 +7572,21 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
 
     allowsHide() {
         return confirm("Close the transaction window?");
+    }
+
+    _writeClicked(e) {
+        this.$recipientMessageEditor.style.display = "block";
+        this.$recipientMessagePreview.style.display = "none";
+    }
+
+    _previewClicked(e) {
+        if (!this._markdownConverter) {
+            this._markdownConverter = new showdown.Converter();
+            this._markdownConverter.setOption('openLinksInNewWindow', true);
+        }
+        this.$recipientMessagePreview.innerHTML = this._markdownConverter.makeHtml(this.$recipientMessageEditor.value);
+        this.$recipientMessageEditor.style.display = "none";
+        this.$recipientMessagePreview.style.display = "block";
     }
 }
 
