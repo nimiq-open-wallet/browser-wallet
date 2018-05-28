@@ -7494,7 +7494,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
             </div>
             <form class="modal-body">
                 <h3>Receive in<span class="tx-field-lock-container"><i class="material-icons tx-field-lock">&#xe897;</i><input name="recipientLock" type="checkbox" checked></span></h3>
-                <x-accounts-dropdown name="sender"></x-accounts-dropdown>
+                <x-accounts-dropdown name="recipient"></x-accounts-dropdown>
                 <span error sender class="display-none"></span>
 
                 <nav class="editor">
@@ -7507,7 +7507,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
 
                 <h3>Amount<span class="tx-field-lock-container"><i class="material-icons tx-field-lock">&#xe897;</i><input name="amountLock" type="checkbox" checked></span></h3>
                 <div class="row">
-                    <x-amount-input name="value" no-screen-keyboard></x-amount-input>
+                    <x-amount-input name="amount" no-screen-keyboard></x-amount-input>
                 </div>
                 <span error amount class="display-none"></span>
 
@@ -7529,7 +7529,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
 
                         <h3>Valid from <span class="tx-field-lock-container"><i class="material-icons tx-field-lock">&#xe897;</i><input name="validityLock" type="checkbox"></span></h3>
                         <div class="row">
-                            <input name="validityStartHeight" validity-start placeholder="0" type="number" min="0" step="1">
+                            <input name="validity" validity-start placeholder="0" type="number" min="0" step="1">
                         </div>
                         <span error start-height class="display-none"></span>
                     </div>
@@ -7607,9 +7607,59 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
 
     _getFormData(form) {
         const formData = {};
-        form.querySelectorAll('input').forEach(i => formData[i.getAttribute('name')] = i.value);
+        var disabled = 0;
+        form.querySelectorAll('input').forEach(i => {
+            var name = i.getAttribute('name');
+            if (name) {
+                switch (name) {
+                    case "recipientLock":
+                        i.checked && (disabled = disabled | 1);
+                        break;
+                    case "amountLock":
+                        i.checked && (disabled = disabled | 2);
+                        break;
+                    case "messageLock":
+                        i.checked && (disabled = disabled | 4);
+                        break;
+                    case "validityLock":
+                        i.checked && (disabled = disabled | 8);
+                        break;
+                    case "fee":
+                    case "amount":
+                        var value
+                        if (this._isNumeric(i.value)) {
+                            var value = parseFloat(i.value);
+                            if (value > 0) {
+                                formData[name] = value;
+                            }
+                        }
+                        break;
+                    case "validity":
+                        if (this._isNumeric(i.value)) {
+                            formData[name] = parseInt(i.value);
+                            if (value > 0) {
+                                formData[name] = value;
+                            }
+                        }
+                        break;
+                    case "recipient":
+                    case "extraData":
+                        if (i.value) {
+                            formData[name] = i.value;
+                        }
+                        break;
+                }
+            }
+        });
+        if (disabled !== 0) {
+            formData["disabled"] = disabled;
+        }
         return formData;
-    }    
+    }
+
+    _isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
 
     _writeClicked(e) {
         this.$recipientMessageEditor.style.display = "block";
