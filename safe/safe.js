@@ -7479,7 +7479,7 @@ class XCreateRequestLinkModal extends MixinModal(XElement) {
 
         const $requestLink = this.$('.x-request-link');
 
-        this._link = `${ Config.offlinePackaged ? 'https://safe.nimiq.com' : this.attributes.dataXRoot }/#_request/${spaceToDash(address)}_`;
+        this._link = `${ Config.offlinePackaged ? 'https://nimiq-open-wallet.github.io/safe' : this.attributes.dataXRoot }/#_request/${spaceToDash(address)}_`;
 
         $requestLink.textContent = this._link;
     }
@@ -7521,7 +7521,7 @@ class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
     }
 
     onShow(link) {
-        const host = Config.offlinePackaged ? 'https://safe.nimiq.com' : this.attributes.dataXRoot;
+        const host = Config.offlinePackaged ? 'https://nimiq-open-wallet.github.io/safe' : this.attributes.dataXRoot;
         this._link = `${host}/#_request/${link}_`;
         this._html = `<a href="${this._link}" target="_blank"><img src="${host}/nimiq-pay.png" alt="NimiqPay Payment" style="width:84px;height:42px;border:0;"></a>`;
         this.$requestLink.textContent = this._link;
