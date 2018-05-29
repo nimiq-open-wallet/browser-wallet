@@ -7679,16 +7679,6 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         this.$write.classList.remove("current");
         this.$preview.classList.add("current");
     }
-
-    _isValid() {
-        // console.log(
-        //     "sender", this._validSender,
-        //     "recipient", this._validRecipient,
-        //     "amountandFees", this._validAmountAndFees,
-        //     "validityStartHeight", this._validValidityStartHeight
-        // );
-        return this._validRecipient && this._validAmountAndFees && this._validValidityStartHeight;
-    }    
 }
 
 class XSendTransactionOfflineModal extends MixinModal(XElement) {

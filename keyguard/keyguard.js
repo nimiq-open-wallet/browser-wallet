@@ -5558,6 +5558,11 @@ class XMnemonicInputField extends XElement {
         requestAnimationFrame(_ => this.$input.focus());
     }
 
+    set value(value) {
+        this.$input.value = value;
+        this._checkValidity();
+    }
+
     get value() {
         return this.$input.value;
     }
@@ -5670,6 +5675,7 @@ class XMnemonicInput extends XElement {
         field.addEventListener('click', this._showInput.bind(this));
         field.addEventListener('mouseenter', this._showInput.bind(this));
         field.addEventListener('mouseleave', this._showPlaceholder.bind(this));
+        field.addEventListener('paste', this._pasteInput.bind(this));
 
         this.$form.appendChild(field.$el);
         this.$fields.push(field);
@@ -5760,6 +5766,28 @@ class XMnemonicInput extends XElement {
         this._revealedWord = target;
 
         target.classList.remove('has-placeholder');
+    }
+
+    _pasteInput(e) {
+        var clipboardData, pastedData;
+
+        // Stop data actually being pasted into div
+        e.stopPropagation();
+        e.preventDefault();
+    
+        // Get pasted data via clipboard API
+        clipboardData = e.clipboardData || window.clipboardData;
+        pastedData = clipboardData.getData('Text');
+    
+        var words = pastedData.split(/[\s,]+/);
+
+        var start = this.$fields.findIndex(field => field.$input == e.target);
+        var end = start + Math.min(words.length, this.$fields.length - start);
+
+        for (var i = start; i < end; i++) {
+            var field = this.$fields[i];
+            field.value = words[i - start];
+        }
     }
 }
 
