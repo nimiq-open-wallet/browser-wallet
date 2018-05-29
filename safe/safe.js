@@ -7485,6 +7485,56 @@ class XCreateRequestLinkModal extends MixinModal(XElement) {
     }
 }
 
+class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
+    html() {
+        return `
+            <div class="modal-header">
+                <i x-modal-close class="material-icons">close</i>
+                <h2>Custom Transaction Request</h2>
+            </div>
+            <div class="modal-body">
+                <div class="center">
+                    <ul>
+                        <li>
+                            <div>Use the following link to request a transaction:</div>
+                            <div class="x-request-link"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+
+    children() {
+        return [];
+    }
+
+    onCreate() {
+        this.$requestLink = this.$('.x-request-link');
+        navigator.share = share;
+        super.onCreate();
+    }
+
+    styles() {
+        return [ ...super.styles(), 'x-create-request-link-modal' ];
+    }
+
+    onShow(link) {
+        this._link = link;
+        this.$requestLink.textContent = this._link;
+    }
+
+    listeners() {
+        return {
+            'click .x-request-link': () => navigator.share({
+                title: 'Nimiq Transaction Request',
+                text: 'Please send me Nimiq using this link:',
+                url: this._link
+            })
+        }
+    }
+}
+
 class XCreatePreparedTransactionModal extends MixinModal(XElement) {
     html() {
         return `
@@ -7570,6 +7620,8 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
 
         this.$write.classList.add("current");
 
+        this._sent = false;
+
         super.onCreate();
     }
 
@@ -7578,31 +7630,23 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
     }
 
     allowsHide() {
-        return confirm("Close the transaction window?");
+        return this._sent || confirm("Close the custom transaction request window?");
     }
 
     _onSubmit(e) {
-        alert("!!!");
-
         e.preventDefault();
-        //if (!this._isValid()) return;
+
+        this._sent = true;
 
         const requestData = this._getFormData(this.$form);
 
-        alert(JSON.stringify(requestData));
-        //tx.network = Config.network;
-        //this.fire('x-send-transaction', tx);
+        const string = JSON.stringify(requestData);
+        const bytes = LZMA.compress(string);
+        const encoded = Base64.encode(bytes);
 
-        /*
-        var data = {
-            'recipient': 'NQ40 7G2N J5FN 51MV 95DG FCQ9 ET11 DVMV QR1F',
-            'amount': 100,
-            'recipientMessage': '![company logo](https://i.imgur.com/oagFtxb.png)<br/>This is the description of the company and/or product.<br/>For more details visit our [website](https://example.com) or contact us at [email@example.com](mailto:email@example.com)',
-            'extraData': 'Data in the extended transaction',
-            'fee': 'low',
-            'disabled': 3
-        };
-        */
+        const link = `${ Config.offlinePackaged ? 'https://safe.nimiq.com' : this.attributes.dataXRoot }/#_request/${encoded}_`;
+
+        this.fire('x-receive-custom-transaction-link', link);
     }
 
     _getFormData(form) {
@@ -9314,6 +9358,7 @@ class XSafe extends MixinRedux(XElement) {
             'x-send-prepared-transaction': this._clickedPreparedTransaction.bind(this),
             'x-send-prepared-transaction-confirm': this._sendTransactionNow.bind(this),
             'x-receive-prepared-transaction': this._clickedReceivePreparedTransaction.bind(this),
+            'x-receive-custom-transaction-link': this._clickedReceiveCustomTransactionLink.bind(this),
             'x-account-modal-new-tx': this._newTransactionFrom.bind(this),
             'x-upgrade-account': this._clickedAccountUpgrade.bind(this),
             'x-account-modal-backup-words': this._clickedAccountBackupWords.bind(this),
@@ -9415,6 +9460,10 @@ class XSafe extends MixinRedux(XElement) {
 
     _clickedReceivePreparedTransaction() {
         XCreatePreparedTransactionModal.show();
+    }
+
+    _clickedReceiveCustomTransactionLink(link) {
+        XCreateCustomRequestLinkModal.show(link)
     }
 
     async _signTransaction(tx) {
