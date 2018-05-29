@@ -6139,7 +6139,7 @@ class XSendTransactionModal extends MixinModal(XSendTransaction) {
             var string = LZMA.decompress(bytes);
             params = JSON.parse(string);
             //this._shouldExpand = true;
-        } catch {
+        } catch(e) {
             params = this._parseRouterParams(params);
             if (params.sender) {
                 params.sender = dashToSpace(params.sender);
@@ -7391,7 +7391,7 @@ class XReceiveRequestLinkModal extends MixinModal(XElement) {
                 var bytes = Base64.decode(params);
                 var string = LZMA.decompress(bytes);
                 address = JSON.parse(string).recipient;
-            } catch {
+            } catch(e) {
                 return false;
             }
             if (!ValidationUtils.isValidAddress(address)) {
