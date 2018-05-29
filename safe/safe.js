@@ -7500,7 +7500,7 @@ class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
                             <div class="x-request-link"></div>
                         </li>
                         <li>
-                            <div>Or add this NimiqPay payment button to your website:</div>
+                            <div>Or add <img src="https://nimiq-open-wallet.github.io/safe/nimiq-pay.png" alt="NimiqPay Payment" style="width107px;height:26px;border:0;vertical-align:-8px;margin-bottom:2px;"> payment button to your website:</div>
                             <div class="x-request-html"></div>
                         </li>
                     </ul>
@@ -7523,7 +7523,7 @@ class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
     onShow(link) {
         const host = Config.offlinePackaged ? 'https://nimiq-open-wallet.github.io/safe' : this.attributes.dataXRoot;
         this._link = `${host}/#_request/${link}_`;
-        this._html = `<a href="${this._link}" target="_blank"><img src="${host}/nimiq-pay.png" alt="NimiqPay Payment" style="width:84px;height:42px;border:0;"></a>`;
+        this._html = `<a href="${this._link}" target="_blank"><img src="${host}/nimiq-pay.png" alt="NimiqPay Payment" style="width:107px;height:26px;border:0;"></a>`;
         this.$requestLink.textContent = this._link;
         this.$requestHtml.textContent = this._html;
     }
