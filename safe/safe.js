@@ -7490,7 +7490,7 @@ class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
         return `
             <div class="modal-header">
                 <i x-modal-close class="material-icons">close</i>
-                <h2>Custom Transaction Request</h2>
+                <h2>Custom Transaction Request Link</h2>
             </div>
             <div class="modal-body">
                 <div class="center">
@@ -7498,6 +7498,10 @@ class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
                         <li>
                             <div>Use the following link to request a transaction:</div>
                             <div class="x-request-link"></div>
+                        </li>
+                        <li>
+                            <div>Or add this NimiqPay payment button to your website:</div>
+                            <div class="x-request-html"></div>
                         </li>
                     </ul>
                 </div>
@@ -7511,17 +7515,17 @@ class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
 
     onCreate() {
         this.$requestLink = this.$('.x-request-link');
+        this.$requestHtml = this.$('.x-request-html');
         navigator.share = share;
         super.onCreate();
     }
 
-    styles() {
-        return [ ...super.styles(), 'x-create-request-link-modal' ];
-    }
-
     onShow(link) {
-        this._link = link;
+        const host = Config.offlinePackaged ? 'https://safe.nimiq.com' : this.attributes.dataXRoot;
+        this._link = `${host}/#_request/${link}_`;
+        this._html = `<a href="${this._link}" target="_blank"><img src="${host}/nimiq-pay.png" alt="NimiqPay Payment" style="width:84px;height:42px;border:0;"></a>`;
         this.$requestLink.textContent = this._link;
+        this.$requestHtml.textContent = this._html;
     }
 
     listeners() {
@@ -7530,6 +7534,11 @@ class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
                 title: 'Nimiq Transaction Request',
                 text: 'Please send me Nimiq using this link:',
                 url: this._link
+            }),
+            'click .x-request-html': () => navigator.share({
+                title: 'NimiqPay Payment Button',
+                text: 'Add this button to your website to ask for a Nymiq payment:',
+                url: this._html
             })
         }
     }
@@ -7644,9 +7653,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         const bytes = LZMA.compress(string);
         const encoded = Base64.encode(bytes);
 
-        const link = `${ Config.offlinePackaged ? 'https://safe.nimiq.com' : this.attributes.dataXRoot }/#_request/${encoded}_`;
-
-        this.fire('x-receive-custom-transaction-link', link);
+        this.fire('x-receive-custom-transaction-link', encoded);
     }
 
     _getFormData(form) {

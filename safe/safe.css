@@ -4549,20 +4549,39 @@ x-receive-request-link-modal .x-message {
     display: none;
 }
 
-x-create-request-link-modal {
+x-create-request-link-modal,
+x-create-custom-request-link-modal {
     width: 600px;
 }
 
-x-create-request-link-modal .x-request-link {
+x-create-request-link-modal .x-request-link,
+x-create-custom-request-link-modal .x-request-link {
     cursor: pointer;
     font-weight: bold;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
-x-create-request-link-modal .x-request-link:hover {
+x-create-request-link-modal .x-request-link:hover,
+x-create-custom-request-link-modal .x-request-link:hover {
     background: rgba(0, 0, 0, 0.2);
 }
 
-x-create-request-link-modal ul {
+x-create-request-link-modal .x-request-html,
+x-create-custom-request-link-modal .x-request-html {
+    cursor: pointer;
+    font-weight: bold;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+x-create-request-link-modal .x-request-html:hover,
+x-create-custom-request-link-modal .x-request-html:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+x-create-request-link-modal ul,
+x-create-custom-request-link-modal ul {
     padding-left: 12px;
     list-style: square;
 }
