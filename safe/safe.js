@@ -7705,6 +7705,9 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         if (disabled !== 0) {
             formData["disabled"] = disabled;
         }
+        if (!this.$recipientMessageEditor.classList.contains("tx-recipient-message-editor-placeholer")) {
+            formData["recipientMessage"] = this.$recipientMessageEditor.value;
+        }
         return formData;
     }
 
