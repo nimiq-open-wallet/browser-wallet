@@ -1983,7 +1983,7 @@ class NetworkClient {
     _createIframe(src) {
         const $iframe = document.createElement('iframe');
         const promise = new Promise(resolve => $iframe.addEventListener('load', () => resolve($iframe)));
-        $iframe.src = src;
+        $iframe.src = src + '/index.html';
         $iframe.name = 'network';
         document.body.appendChild($iframe);
         return promise;
