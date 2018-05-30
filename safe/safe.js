@@ -7581,7 +7581,7 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                     <a name="preview">Preview</a>
                 </nav>
                 <h3>Message from recipient</h3>
-                <textarea name="recipientMessageEditor" class="tx-recipient-message tx-recipient-message-editor tx-recipient-message-editor-placeholer">Markdown-formatted message to be shown to the transaction sender.\nThe product or service description can be put here.</textarea>
+                <textarea name="recipientMessageEditor" class="tx-recipient-message tx-recipient-message-editor"></textarea>
                 <div name="recipientMessagePreview" class="tx-recipient-message tx-recipient-message-preview"></div>
 
                 <h3>Amount<span class="tx-field-lock-container"><i class="material-icons tx-field-lock">&#xe897;</i><input name="amountLock" type="checkbox" checked></span></h3>
@@ -7628,21 +7628,18 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
     
     onCreate() {
         this.$form = this.$('form');
+        this.$button = this.$('button[send]');        
         this.$nav = this.$('nav');
+
         this.$recipientMessageEditor = this.$form.querySelector('textarea[name="recipientMessageEditor"]');
         this.$recipientMessagePreview = this.$form.querySelector('div[name="recipientMessagePreview"]');
         this.$write = this.$form.querySelector('nav a[name="write"]');
         this.$preview = this.$form.querySelector('nav a[name="preview"]');
+        this.$validity = this.$form.querySelector('input[name="validity"]');
 
-        this.$form.addEventListener('submit', e => this._onSubmit(e));
-        var el = this.$recipientMessageEditor;
-        this.$recipientMessageEditor.addEventListener('click', e => {
-            el.classList.remove("tx-recipient-message-editor-placeholer");
-            el.value = "";
-            el.removeEventListener('click', this);
-        });
-        this.$write.addEventListener('click', this._writeClicked.bind(this));
-        this.$preview.addEventListener('click', this._previewClicked.bind(this));
+        this._errorElements = {};
+
+        this._isSetMax = false;
 
         this.$recipientMessageEditor.style.display = "block";
         this.$recipientMessagePreview.style.display = "none";
@@ -7651,6 +7648,8 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
 
         this._sent = false;
 
+        this._editorPlaceholder = 'Markdown-formatted message to be shown to the transaction sender.\nThe product or service description can be put here.';
+
         super.onCreate();
     }
 
@@ -7658,12 +7657,60 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         return [ ...super.styles(), 'x-send-transaction' ];
     }
 
+    static mapStateToProps(state) {
+        return {
+            hasConsensus: state.network.consensus === 'established'
+        }
+    }
+
+    listeners() {
+        return {
+            'submit form': this._onSubmit.bind(this),
+            'x-account-selected': () => this._validateField('recipient'),
+            'input input[name="amount"]': () => this._validateField('amount'),
+            'input input[name="fee"]': () => this._validateField('fees'),
+            'input input[name="validity"]': () => this._validateField('validityStartHeight'),
+            'click a[name="write"]': () => {
+                this.$recipientMessageEditor.style.display = "block";
+                this.$recipientMessagePreview.style.display = "none";
+                this.$write.classList.add("current");
+                this.$preview.classList.remove("current");        
+            },
+            'click a[name="preview"]': () => {
+                if (!this._markdownConverter) {
+                    this._markdownConverter = new showdown.Converter();
+                    this._markdownConverter.setOption('openLinksInNewWindow', true);
+                }
+                this.$recipientMessagePreview.innerHTML = this._markdownConverter.makeHtml(this.$recipientMessageEditor.value);
+                this.$recipientMessageEditor.style.display = "none";
+                this.$recipientMessagePreview.style.display = "block";
+                this.$write.classList.remove("current");
+                this.$preview.classList.add("current");                        
+            },
+            'click textarea': () => {
+                if (this.$recipientMessageEditor.classList.contains("tx-recipient-message-editor-placeholer")) {
+                    this.$recipientMessageEditor.classList.remove("tx-recipient-message-editor-placeholer");
+                    this.$recipientMessageEditor.value = "";    
+                }
+            },
+            'blur textarea': () => {
+                if (!this.$recipientMessageEditor.value) {
+                    this.$recipientMessageEditor.classList.add("tx-recipient-message-editor-placeholer");
+                    this.$recipientMessageEditor.value = this._editorPlaceholder;    
+                }
+            },
+            'x-fee-input-changed': this._onFeeChanged,
+            'x-extra-data-input-changed-size': this._onExtraDataChangedSize
+        }
+    }
+
     allowsHide() {
-        return this._sent || confirm("Close the custom transaction request window?");
+        return this.$button.disabled || this._sent || confirm("Close the custom transaction request window?");
     }
 
     _onSubmit(e) {
         e.preventDefault();
+        if (!this._isValid()) return;
 
         this._sent = true;
 
@@ -7674,6 +7721,44 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         const encoded = Base64.encode(bytes);
 
         this.fire('x-receive-custom-transaction-link', encoded);
+    }
+
+    clear() {
+        this.$amountInput.value = '';
+        this.$extraDataInput.value = '';
+        this.$feeInput.value = 0;
+        this.$validity.value = '';
+        this.$recipientMessageEditor.value = this._editorPlaceholder;
+        this.$recipientMessageEditor.classList.add('tx-recipient-message-editor-placeholer');
+        this.$recipientMessagePreview.innerHTML = "";
+        this.$recipientMessagePreview.style.display = "none";
+
+        this.$expandable.collapse();
+
+        this.loading = false;
+    }
+
+    validateAllFields() {
+        this._validateRecipient();
+        this._validateAmountAndFees();
+        this._validateValidityStartHeight();
+        this.setButton();
+    }
+
+    onShow(...params) {
+        this.clear();
+        this.$amountInput.maxDecimals = document.body.classList.contains('setting-show-all-decimals') ? 5 : 2;
+        this.validateAllFields();
+    }
+
+    set loading(isLoading) {
+        this._isLoading = !!isLoading;
+        this.$button.textContent = this._isLoading ? 'Loading' : 'Send';
+        this.setButton();
+    }
+
+    _isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
     }
 
     _getFormData(form) {
@@ -7735,27 +7820,141 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
         return formData;
     }
 
-    _isNumeric(n) {
-        return !isNaN(parseFloat(n)) && isFinite(n);
+    _onAmountSetMax() {
+        const account = this.$accountsDropdown.selectedAccount;
+        this.$amountInput.maxDecimals = 5;
+        this.$amountInput.value = account.balance - this.$feeInput.value;
+        this._isSetMax = true;
     }
 
-    _writeClicked(e) {
-        this.$recipientMessageEditor.style.display = "block";
-        this.$recipientMessagePreview.style.display = "none";
-        this.$write.classList.add("current");
-        this.$preview.classList.remove("current");
+    _onFeeChanged(fee) {
+        if (this._isSetMax) this._onAmountSetMax();
     }
 
-    _previewClicked(e) {
-        if (!this._markdownConverter) {
-            this._markdownConverter = new showdown.Converter();
-            this._markdownConverter.setOption('openLinksInNewWindow', true);
+    _onExtraDataChangedSize(size) {
+        if (size > 0) this.$feeInput.txSize = 166 + size;
+        else this.$feeInput.txSize = 138;
+    }
+
+    /**
+     * VALIDATION METHODS
+     */
+
+    setButton() {
+        this.$button.disabled = !this._isValid() || this._isLoading;
+    }
+
+    async _validateField(field) {
+        switch (field) {
+            case 'recipient':
+                this._validateRecipient();
+                // Fall through
+            case 'amount':
+                this._isSetMax = (this.$amountInput.value + this.$feeInput.value) === this.$accountsDropdown.selectedAccount.balance;
+                // Fall through
+            case 'fees':
+                this._validateAmountAndFees();
+                break;
+            case 'validityStartHeight':
+                this._validateValidityStartHeight();
+                break;
         }
-        this.$recipientMessagePreview.innerHTML = this._markdownConverter.makeHtml(this.$recipientMessageEditor.value);
-        this.$recipientMessageEditor.style.display = "none";
-        this.$recipientMessagePreview.style.display = "block";
-        this.$write.classList.remove("current");
-        this.$preview.classList.add("current");
+
+        return this.setButton();
+    }
+
+    _validateRecipient() {
+        const account = this.$accountsDropdown.selectedAccount;
+
+        // TODO FIXME Move this somewhere more reasonable
+        if (account.type !== AccountType.KEYGUARD_HIGH && account.type !== AccountType.KEYGUARD_LOW) {
+            this.$extraDataInput.value = '';
+            this.$('.extra-data-section').classList.add('display-none');
+        } else {
+            this.$('.extra-data-section').classList.remove('display-none');
+        }
+
+        if (this.properties.hasConsensus) {
+            this._validRecipient = !!(account && account.balance > 0);
+            if (this._validRecipient) {
+                this._clearError('recipient');
+            } else {
+                this._setError('This account has no balance', 'recipient');
+            }
+        }
+        else {
+            this._validRecipient = !!account;
+        }
+    }
+
+    _validateAmountAndFees() {
+        const account = this.$accountsDropdown.selectedAccount;
+
+        const amount = this.$amountInput.value;
+        const fees = this.$feeInput.value;
+
+        if (amount < 0) {
+            this._setError('You cannot send a negative amount', 'amount');
+        }
+        if (amount === 0) {
+            this._clearError('amount');
+        }
+
+        if (amount <= 0 || fees < 0) {
+            this._validAmountAndFees = false;
+            return;
+        }
+
+        if (this.properties.hasConsensus) {
+            this._validAmountAndFees = !!(account && account.balance >= Math.round((amount + fees) * 1e5) / 1e5);
+
+            if (!this._validAmountAndFees) {
+                this._setError('You do not have enough funds', 'amount');
+            } else {
+                this._clearError('amount');
+            }
+        }
+        else {
+            this._validAmountAndFees = true;
+        }
+    }
+
+    _validateValidityStartHeight() {
+        // TODO: Validate validityStartHeight?
+        const value = this.$('input[validity-start]').value || 0;
+
+        this._validValidityStartHeight = !!(value >= 0);
+
+        if (this._validValidityStartHeight) {
+            this._clearError('start-height');
+        } else {
+            this._setError('Cannot set a negative start height', 'start-height');
+        }
+    }
+
+    _isValid() {
+        // console.log(
+        //     "recipient", this._validRecipient,
+        //     "amountandFees", this._validAmountAndFees,
+        //     "validityStartHeight", this._validValidityStartHeight
+        // );
+        return this._validRecipient && this._validAmountAndFees && this._validValidityStartHeight;
+    }
+
+    _setError(msg, field) {
+        let $el = this._errorElements[field];
+        if (!$el) this._errorElements[field] = $el = this.$(`span[error][${field}]`);
+
+        if (msg) {
+            $el.textContent = msg;
+            $el.classList.remove('display-none');
+        } else {
+            $el.classList.add('display-none');
+        }
+    }
+
+    _clearError(field) {
+        this._setError('', field);
     }
 }
 
