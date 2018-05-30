@@ -5444,6 +5444,18 @@ class XFeeInput extends XInput {
         return Number(this.$input.value);
     }
 
+    get valueOrString() {
+        if (this.value === 0) {
+            return 'free';
+        } else if (this.value === this._lowValue()) {
+            return 'low';
+        } else if (this.value === this._highValue()) {
+            return 'high';                                    
+        } else {
+            return this.value;
+        }
+    }
+
     set txSize(size) {
         const step = this.value / this._txSize;
         this._txSize = size;
@@ -5474,12 +5486,20 @@ class XFeeInput extends XInput {
                 this.value = 0;
                 break;
             case 'low':
-                this.value = Math.floor(this._maxSats * this._txSize / 2 / this._txSize) * this._txSize / 1e5;
+                this.value = this._lowValue();
                 break;
             case 'high':
-                this.value = this._maxSats * this._txSize;
+                this.value = this._highValue();
                 break;
         }
+    }
+
+    _lowValue() {
+        return Math.floor(this._maxSats * this._txSize / 2 / this._txSize) * this._txSize / 1e5;
+    }
+
+    _highValue() {
+        return this._maxSats * this._txSize / 1e5;
     }
 
     /*
@@ -7676,8 +7696,12 @@ class XCreatePreparedTransactionModal extends MixinModal(XElement) {
                         i.checked && (disabled = disabled | 8);
                         break;
                     case "fee":
+                        var value = this.$feeInput.valueOrString;
+                        if (!(value === 0 || value === 'low')) {
+                            formData[name] = value;
+                        }
+                        break;
                     case "amount":
-                        var value
                         if (this._isNumeric(i.value)) {
                             var value = parseFloat(i.value);
                             if (value > 0) {
