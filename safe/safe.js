@@ -5913,7 +5913,7 @@ class XSendTransaction extends MixinRedux(XElement) {
 
     set loading(isLoading) {
         this._isLoading = !!isLoading;
-        this.$button.textContent = this._isLoading ? 'Loading' : 'Send';
+        this.$button.textContent = this._isLoading ? 'Loading' : 'Generate';
         this.setButton();
     }
 
@@ -7527,7 +7527,7 @@ class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
                             <div class="x-request-link"></div>
                         </li>
                         <li>
-                            <div>Or add <img src="https://nimiq-open-wallet.github.io/safe/nimiq-pay.png" alt="NimiqPay Payment" style="width107px;height:26px;border:0;vertical-align:-8px;margin-bottom:2px;"> payment button to your website:</div>
+                            <div>Or add a <img src="https://nimiq-open-wallet.github.io/safe/nimiq-pay.png" alt="NimiqPay Payment" style="width107px;height:26px;border:0;vertical-align:-8px;margin-bottom:2px;"> payment button to your website:</div>
                             <div class="x-request-html"></div>
                         </li>
                     </ul>
@@ -9030,7 +9030,7 @@ class XSettings extends MixinRedux(XElement) {
                 <hr>
                 <span class="setting" show-all-decimals>
                     Show all decimals
-                    <input type="checkbox" disabled>
+                    <input type="checkbox">
                     <small>Show all five decimals when displaying balances.</small>
                 </span>
                 <!--
@@ -9059,6 +9059,7 @@ class XSettings extends MixinRedux(XElement) {
     listeners() {
         return {
             'click [show-all-decimals]': this._onClickShowAllDecimals,
+            'change [show-all-decimals]>input': this._onClickShowAllDecimals,
             //'click [visual-lock]': this._onClickVisualLock,
             'click [prepared-tx]': () => XSendPreparedTransactionModal.show()
         }
@@ -9066,8 +9067,10 @@ class XSettings extends MixinRedux(XElement) {
 
     static get actions() { return { showAllDecimals } }
 
-    _onClickShowAllDecimals() {
-        this.actions.showAllDecimals(!this.$('[show-all-decimals] input').checked);
+    _onClickShowAllDecimals(_, e) {
+        // Handle click events from the text, but only the change event of the checkbox
+        if(e.type === 'click' && e.target.matches('input')) return;
+        this.actions.showAllDecimals(!this.settings.showAllDecimals);
     }
 
     _onClickVisualLock() {
@@ -9268,7 +9271,7 @@ class XWelcomeModal extends MixinRedux(MixinModal(XElement)) {
             </style>
             <div class="modal-header">
                 <i x-modal-close class="material-icons">close</i>
-                <h2>Welcome to Nimiq Safe</h2>
+                <h2>Welcome to Nimiq Open Wallet</h2>
             </div>
             <div class="modal-body center">
                 <button class="create waiting">Create New Account</button>
@@ -9428,7 +9431,7 @@ class XSafe extends MixinRedux(XElement) {
                 <div class="header-top content-width">
                     <div class="nimiq-app-name">
                         <nimiq-logo>
-                            NIMIQ SAFE<sup>BETA</sup>
+                            Nimiq Open Wallet<sup>BETA</sup>
                             <a logo-link href="#"></a>
                         </nimiq-logo>
                     </div>
@@ -10735,7 +10738,7 @@ class XSafeLock extends XElement {
     html() {
         return `
             <i class="material-icons">locked</i>
-            <h1>Your Nimiq Safe is locked</h1>
+            <h1>Your Nimiq Open Wallet is locked</h1>
             <p>Draw your pattern to unlock:</p>
             <div id="unlock-patternLock"></div>
         `
