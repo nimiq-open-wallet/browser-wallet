@@ -4510,8 +4510,9 @@ x-send-transaction-modal h3 {
     margin-top: 0;
 }
 
-x-send-transaction-modal h3[expandable-trigger] {
-    font-size: 10px;
+x-send-transaction-modal h3[expandable-trigger],
+x-create-prepared-transaction-modal h3[expandable-trigger] {
+    font-size: 13px;
 }
 
 x-send-transaction-offline-modal,
