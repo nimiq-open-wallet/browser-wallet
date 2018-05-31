@@ -7527,7 +7527,7 @@ class XCreateCustomRequestLinkModal extends MixinModal(XElement) {
                             <div class="x-request-link"></div>
                         </li>
                         <li>
-                            <div>Or add <img src="https://nimiq-open-wallet.github.io/safe/nimiq-pay.png" alt="NimiqPay Payment" style="width107px;height:26px;border:0;vertical-align:-8px;margin-bottom:2px;"> payment button to your website:</div>
+                            <div>Or add a <img src="https://nimiq-open-wallet.github.io/safe/nimiq-pay.png" alt="NimiqPay Payment" style="width107px;height:26px;border:0;vertical-align:-8px;margin-bottom:2px;"> payment button to your website:</div>
                             <div class="x-request-html"></div>
                         </li>
                     </ul>
