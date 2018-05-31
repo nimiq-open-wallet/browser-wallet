@@ -9268,7 +9268,7 @@ class XWelcomeModal extends MixinRedux(MixinModal(XElement)) {
             </style>
             <div class="modal-header">
                 <i x-modal-close class="material-icons">close</i>
-                <h2>Welcome to Nimiq Safe</h2>
+                <h2>Welcome to Nimiq Open Wallet</h2>
             </div>
             <div class="modal-body center">
                 <button class="create waiting">Create New Account</button>
@@ -9428,7 +9428,7 @@ class XSafe extends MixinRedux(XElement) {
                 <div class="header-top content-width">
                     <div class="nimiq-app-name">
                         <nimiq-logo>
-                            NIMIQ SAFE<sup>BETA</sup>
+                            Nimiq Open Wallet<sup>BETA</sup>
                             <a logo-link href="#"></a>
                         </nimiq-logo>
                     </div>
@@ -10735,7 +10735,7 @@ class XSafeLock extends XElement {
     html() {
         return `
             <i class="material-icons">locked</i>
-            <h1>Your Nimiq Safe is locked</h1>
+            <h1>Your Nimiq Open Wallet is locked</h1>
             <p>Draw your pattern to unlock:</p>
             <div id="unlock-patternLock"></div>
         `
