@@ -1,0 +1,304 @@
+x-transaction-modal {
+    max-width: 600px;
+}
+
+x-transaction-modal .center {
+    flex-direction: row;
+}
+
+x-transaction-modal x-identicon {
+    display: inline-block;
+    width: 120px;
+}
+
+x-transaction-modal .arrow {
+    margin: 0 24px;
+}
+
+x-transaction-modal .row {
+    margin: 14px 0;
+    align-items: flex-start;
+}
+
+x-transaction-modal .row + .row {
+    margin-top: 28px;
+}
+
+x-transaction-modal label {
+    display: inline-block;
+    width: 96px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 13px;
+    font-weight: bold;
+    opacity: 0.76;
+    flex-shrink: 0;
+}
+
+x-transaction-modal .label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+x-transaction-modal.incoming .label[sender].default-label {
+    display: none;
+}
+
+x-transaction-modal.outgoing .label[recipient].default-label {
+    display: none;
+}
+
+x-transaction-modal x-address {
+    margin-left: -16px;
+}
+
+x-transaction-modal .blockHeight,
+x-transaction-modal .confirmations,
+x-transaction-modal .timestamp,
+x-transaction-modal x-amount,
+x-transaction-modal .fee {
+    /* font-size: 1.2em; */
+}
+
+x-transaction-modal.removed .timestamp,
+x-transaction-modal.expired .timestamp {
+    background: var(--warning-color);
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+x-transaction-modal .confirmations {
+    font-size: 1em;
+}
+
+x-transaction-modal x-amount {
+    margin: 18px 0;
+    font-size: 26px;
+}
+
+x-transaction-modal.removed x-currency-nim,
+x-transaction-modal.expired x-currency-nim {
+    text-decoration: line-through;
+}
+
+x-transaction-modal .hash {
+    font-family: monospace;
+}
+
+@media (max-width: 560px) {
+    x-transaction-modal x-identicon {
+        width: 90px;
+    }
+
+    x-transaction-modal .arrow {
+        margin: 0 18px;
+    }
+
+    x-transaction-modal .row {
+        flex-direction: column;
+    }
+
+    x-transaction-modal label {
+        margin-bottom: 6px;
+        font-size: 12px
+    }
+
+    x-transaction-modal .label {
+        margin-bottom: 6px;
+    }
+
+    x-transaction-modal x-address.x-address {
+        margin-left: -4px;
+        padding: 8px 4px;
+    }
+}
+
+x-transactions {
+    display: block;
+    width: 100%;
+    text-align: right;
+    margin-top: -2.8em;
+}
+
+x-transactions a[secondary] {
+    padding: 1em;
+    margin-bottom: -1em;
+    margin-top: 5px;
+    text-align: center;
+}
+
+x-transactions-list {
+    display: table;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+x-transactions-list x-loading-animation {
+    margin: 0 auto;
+    margin-top: 2em;
+    display: none;
+}
+
+x-transactions-list x-loading-animation + h2 {
+    text-align: center;
+}
+
+x-transaction {
+    display: table-row;
+    padding: 8px 0;
+    animation: from-right 500ms;
+    animation-fill-mode: backwards; /* Apply the animation's opacity: 0 when the animation property is applied */
+    cursor: pointer;
+}
+
+x-transaction.removed,
+x-transaction.expired {
+    background: var(--warning-color);
+}
+
+x-transaction > * {
+    /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
+    display: table-cell !important;
+    vertical-align: middle;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+x-transaction > *:first-child {
+    padding-left: 8px;
+}
+
+x-transaction > *:last-child {
+    padding-right: 8px;
+}
+
+x-transaction:last-child > * {
+    border-bottom: none;
+}
+
+x-transaction:nth-child(1) { animation-delay: 0.0s }
+x-transaction:nth-child(2) { animation-delay: 0.1s }
+x-transaction:nth-child(3) { animation-delay: 0.2s }
+x-transaction:nth-child(4) { animation-delay: 0.3s }
+x-transaction:nth-child(5) { animation-delay: 0.4s }
+x-transaction:nth-child(6) { animation-delay: 0.5s }
+x-transaction:nth-child(7) { animation-delay: 0.6s }
+x-transaction:nth-child(8) { animation-delay: 0.7s }
+x-transaction:nth-child(9) { animation-delay: 0.8s }
+x-transaction:nth-child(10){ animation-delay: 0.9s }
+
+x-transactions.no-animation x-transaction {
+    animation: none !important;
+    animation-delay: 0s !important;
+}
+
+x-transaction:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+x-transaction:last-child {
+    border-bottom: 1px solid transparent;
+}
+
+x-transaction.removed .timestamp,
+x-transaction.expired .timestamp {
+    font-weight: bold;
+}
+
+x-transaction x-identicon {
+    width: 66px;
+    height: 50px;
+    padding: 0 8px;
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+    x-transaction .label {
+        display: none !important;
+    }
+}
+
+x-transaction.incoming .label[recipient],
+x-transaction.outgoing .label[sender],
+x-transaction.transfer .label {
+    font-weight: bold;
+}
+
+x-transaction .timestamp {
+    /* text-transform: uppercase; */
+}
+
+x-transaction x-amount {
+    text-align: right;
+    font-size: 1.4em;
+}
+
+x-transaction.removed x-currency-nim,
+x-transaction.expired x-currency-nim {
+    text-decoration: line-through;
+}
+
+@media (max-width: 768px) {
+    x-transaction x-amount {
+        font-size: 1.2em;
+    }
+
+    x-transaction x-amount .rest-decimals {
+        display: none;
+    }
+
+    x-transaction x-amount .ticker {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    x-transaction x-amount {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 350px) {
+    x-transaction x-amount {
+        font-size: 1em;
+    }
+}
+
+/* Responsiveness */
+@media (min-width: 480px) {
+    x-transaction {
+        padding: 8px 16px;
+    }
+}
+
+x-transactions-list x-no-transactions {
+	font-size: 16px;
+	display: block;
+	padding: 1.5em;
+	text-align: center;
+	opacity: 0.6;
+}
+
+x-transactions-list x-no-transactions h1.material-icons {
+    display: block;
+    font-size: 120px;
+    opacity: 0.3;
+    margin-bottom: 0.1em;
+}
+
+x-paginator {
+    display: block;
+    text-align: center;
+}
+
+x-paginator button {
+    display: inline;
+    padding: 0 7px !important;
+    line-height: 40px !important;
+}

@@ -1,0 +1,427 @@
+x-loading-animation {
+    opacity: 1;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><style>@keyframes dash-animation { to { transform: rotate(240deg) translateZ(0); } } %23circle { animation: 3s dash-animation infinite linear; transform: rotate(-120deg) translateZ(0); transform-origin: center; }</style><defs><clipPath id="hexClip"><path clip-rule="evenodd" d="M16 4.29h32L64 32 48 59.71H16L0 32zm4.62 8h22.76L54.76 32 43.38 51.71H20.62L9.24 32z"/></clipPath></defs><path fill-rule="evenodd" d="M16 4.29h32L64 32 48 59.71H16L0 32zm4.62 8h22.76L54.76 32 43.38 51.71H20.62L9.24 32z" fill="%23fff" opacity=".2"/><g clip-path="url(%23hexClip)"><circle id="circle" cx="32" cy="32" r="16" fill="none" stroke-width="32" stroke="%23F6AE2D" stroke-dasharray="16.666 84.666"/></g></svg>');/* ALSO works in Firefox! */
+    /*background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0Ij48c3R5bGU+QGtleWZyYW1lcyBkYXNoLWFuaW1hdGlvbiB7IHRvIHsgdHJhbnNmb3JtOiByb3RhdGUoMjQwZGVnKSB0cmFuc2xhdGVaKDApOyB9IH0gI2NpcmNsZSB7IGFuaW1hdGlvbjogM3MgZGFzaC1hbmltYXRpb24gaW5maW5pdGUgbGluZWFyOyB0cmFuc2Zvcm06IHJvdGF0ZSgtMTIwZGVnKSB0cmFuc2xhdGVaKDApOyB0cmFuc2Zvcm0tb3JpZ2luOiBjZW50ZXI7IH08L3N0eWxlPjxkZWZzPjxjbGlwUGF0aCBpZD0iaGV4Q2xpcCI+PHBhdGggY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTYgNC4yOWgzMkw2NCAzMiA0OCA1OS43MUgxNkwwIDMyem00LjYyIDhoMjIuNzZMNTQuNzYgMzIgNDMuMzggNTEuNzFIMjAuNjJMOS4yNCAzMnoiLz48L2NsaXBQYXRoPjwvZGVmcz48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNiA0LjI5aDMyTDY0IDMyIDQ4IDU5LjcxSDE2TDAgMzJ6bTQuNjIgOGgyMi43Nkw1NC43NiAzMiA0My4zOCA1MS43MUgyMC42Mkw5LjI0IDMyeiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iLjIiLz48ZyBjbGlwLXBhdGg9InVybCgjaGV4Q2xpcCkiPjxjaXJjbGUgaWQ9ImNpcmNsZSIgY3g9IjMyIiBjeT0iMzIiIHI9IjE2IiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjMyIiBzdHJva2U9IiNGNkFFMkQiIHN0cm9rZS1kYXNoYXJyYXk9IjE2LjY2NiA4NC42NjYiLz48L2c+PC9zdmc+'); /* Works also in Firefox */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 72px;
+    z-index: 1;
+    display: block;
+    height: 72px;
+    width: 80px;
+}
+
+x-loading-animation + h2{
+    padding-top: 16px;
+}
+.x-input{
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.x-input.shake input {
+    border-bottom: 1px solid var(--error-color) !important;
+}
+
+x-passphrase-input form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+x-passphrase-input form input {
+    padding-right: 40px;
+}
+
+x-passphrase-input form #eye {
+    position: absolute;
+    right: -3px;
+    cursor: pointer;
+}
+
+x-passphrase-indicator{
+	width: 100%;
+	padding: 16px 0;
+}
+
+x-passphrase-indicator meter {
+    width: 100%;
+    height: 6px;
+
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+x-passphrase-indicator .label {
+	text-align: center;
+}
+
+x-passphrase-indicator meter::-webkit-meter-bar {
+  background: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Webkit based browsers */
+x-passphrase-indicator meter[value="10"]::-webkit-meter-optimum-value { background: var(--error-color); }
+x-passphrase-indicator meter[value="70"]::-webkit-meter-optimum-value { background: var(--warning-color); }
+x-passphrase-indicator meter[value="100"]::-webkit-meter-optimum-value,
+x-passphrase-indicator meter[value="130"]::-webkit-meter-optimum-value { background: var(--success-color); }
+
+/* Gecko based browsers */
+x-passphrase-indicator meter[value="10"]::-moz-meter-bar { background: var(--error-color); }
+x-passphrase-indicator meter[value="70"]::-moz-meter-bar { background: var(--warning-color); }
+x-passphrase-indicator meter[value="100"]::-moz-meter-bar,
+x-passphrase-indicator meter[value="130"]::-moz-meter-bar { background: var(--success-color); }
+
+x-passphrase-indicator i:hover {
+    cursor: pointer;
+}
+
+x-passphrase-setter,
+x-passphrase-getter {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+	max-width: var(--max-width);
+	flex-grow: 1;
+	text-align: center;
+}
+
+x-passphrase-setter div[buttons],
+x-passphrase-getter div[buttons] {
+	position: relative;
+}
+
+x-passphrase-setter div[buttons] > *,
+x-passphrase-getter div[buttons] > * {
+	position: absolute;
+	top: 0;
+}
+
+x-passphrase-setter [wrong][disabled],
+x-passphrase-getter [wrong][disabled] {
+	background: var(--error-color);
+	color: white;
+}
+
+x-passphrase-setter:not(.wrong) [wrong],
+x-passphrase-getter:not(.wrong) [wrong] {
+	display: none;
+}
+
+x-passphrase-setter button,
+x-passphrase-getter button {
+	transition: opacity 300ms;
+}
+
+x-passphrase-setter.wrong button,
+x-passphrase-getter.wrong button {
+	opacity: 0;
+}
+
+.x-recovery-phrase {
+    width: 100%;
+    max-width: 360px;
+    padding: 16px;
+    margin-top: 24px;
+    box-sizing: border-box;
+    position: relative;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAJElEQVQYV2NkwAT/GdHE/jMwMDAiC4IFQIpggnABmCCKAEgQAABOBQUaykC8AAAAAElFTkSuQmCC');
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid white;
+    border-radius: 8px;
+    color: white;
+    height: 250px;
+}
+
+.x-recovery-phrase:before {
+    content: 'Recovery Words';
+    display: block;
+    position: absolute;
+    left: 50%;
+    width: 140px;
+    box-sizing: border-box;
+    border-radius: 24px;
+    top: -13px;
+    font-size: 12px;
+    line-height: 26px;
+    margin-left: -70px;
+    background: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE4IDhoLTFWNmMwLTIuNzYtMi4yNC01LTUtNVM3IDMuMjQgNyA2djJINmMtMS4xIDAtMiAuOS0yIDJ2MTBjMCAxLjEuOSAyIDIgMmgxMmMxLjEgMCAyLS45IDItMlYxMGMwLTEuMS0uOS0yLTItMnptLTYgOWMtMS4xIDAtMi0uOS0yLTJzLjktMiAyLTIgMiAuOSAyIDItLjkgMi0yIDJ6bTMuMS05SDguOVY2YzAtMS43MSAxLjM5LTMuMSAzLjEtMy4xIDEuNzEgMCAzLjEgMS4zOSAzLjEgMy4xdjJ6Ii8+PC9zdmc+');
+    background-size: 14px;
+    background-position: 9px center;
+    background-repeat: no-repeat;
+    background-color: black;
+    padding-left: 16px;
+    transition: opacity 300ms;
+}
+
+.x-recovery-phrase.x-entry .x-word {
+    animation: x-recovery-phrase 300ms;
+    animation-fill-mode: backwards;
+}
+
+@keyframes x-recovery-phrase {
+    from {
+        opacity: 0;
+        transform: translate(32px, 16px);
+    }
+}
+
+.x-input{
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.x-input.shake input {
+    border-bottom: 1px solid var(--error-color) !important;
+}
+
+x-mnemonic-input {
+    text-align: center;
+    line-height: 32px;
+    will-change: transform;
+    display: block;
+    margin-bottom: 28px;
+}
+
+x-mnemonic-input.shake {
+    border-color: var(--error-color);
+}
+
+x-mnemonic-input > form {
+    display: flex;
+    flex-wrap: wrap;
+    transition: transform 0.8s ease, opacity 0.5s ease;
+    will-change: transform, opacity;
+}
+
+x-mnemonic-input > form > * {
+    flex: 1 0 20%;
+    margin: 2px;
+}
+
+x-mnemonic-input .placeholder {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12),
+    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+x-mnemonic-input input[type="text"] {
+    background-color: rgba(255, 255, 255, 0.05);
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: inherit;
+    line-height: 2;
+    font-size: 15px;
+    padding: 0px;
+    border-radius: 2px;
+}
+
+x-mnemonic-input input[type="text"]:focus {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+x-mnemonic-input input[type="text"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+x-mnemonic-input-field.complete input[type="text"] {
+    border-bottom-color: var(--success-color);
+}
+
+x-mnemonic-input-success {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transform: scale(0.5);
+    transition: transform 0.8s ease, opacity 0.5s ease;
+    will-change: transform, opacity;
+    transition-delay: 300ms;
+}
+
+datalist {
+    display: none;
+}
+
+.autocomplete-suggestions {
+    text-align: left;
+    cursor: default;
+    border: 1px solid #ccc;
+    border-top: 0;
+    background: #fff;
+    box-shadow: -1px 1px 3px rgba(0, 0, 0, .1);
+
+    /* core styles should not be changed */
+    position: absolute;
+    display: none;
+    z-index: 9999;
+    max-height: 254px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.autocomplete-suggestion {
+    position: relative;
+    padding: 0 .1em;
+    line-height: 2.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--secondary-text-color);
+    color: black;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-suggestion:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-suggestion b {
+    font-weight: normal;
+    color: var(--primary-color);
+    color: black;
+}
+
+.autocomplete-suggestion.selected {
+    background: #cce5ff;
+}
+
+x-mnemonic-phrase {
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 15px;
+    line-height: 32px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+x-mnemonic-phrase .x-word {
+    margin: 2px;
+    display: flex;
+    flex-flow: column;
+    flex: 1 0 20%;
+    position: relative;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12),
+    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+x-privacy-agent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 368px;
+    flex-grow: 1;
+    /* height: 100%; */
+    margin-top:  16px;
+}
+
+x-privacy-agent h1 {
+    color: var(--error-color);
+    padding: 16px 0;
+    font-weight: 500;
+    font-size: 24px;
+}
+
+x-privacy-agent p {
+    max-width: 400px;
+    font-size: 15px;
+}
+
+x-privacy-agent svg{
+    opacity: 0.8;
+    display: block;
+}
+
+x-privacy-agent button{
+    margin-top: 0;
+}
+
+x-privacy-agent-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background: white;
+    padding: 24px 16px;
+    display: flex;
+    color: rgba(0,0,0,0.98);
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 16px;
+    box-shadow:  rgba(0, 0, 0, 0.5) 0 2px 4px;
+}
+
+@media (max-height: 500px) {
+    x-privacy-agent-container svg {
+        /* display: none; */
+    }
+}
+
+/* todo fix workaround and make mixin-like styles work again */
+
+x-validate-words-connected {
+    width: 100%;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 15px;
+    line-height: 32px;
+    flex-grow: 1;
+}
+
+x-validate-words-connected p {
+    margin-bottom: 32px;
+}
+
+x-validate-words-connected x-target-index {
+    display: block;
+    font-size: 64px;
+    line-height: 80px;
+    margin-bottom: 42px;
+    font-weight: 200;
+}
+
+x-validate-words-connected x-target-index::before {
+    content: '#';
+    font-size: 52px;
+}
+
+x-validate-words-connected button {
+    margin: 4px;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+}
+
+x-validate-words-connected button.correct {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: var(--secondary-text-color);
+}
+
+x-validate-words-connected button.wrong {
+    background-color: var(--error-color);
+    border-color: var(--error-color);
+    color: var(--secondary-cta-color);
+}
+
+x-wordlist {
+    display: block;
+    height: 180px;
+    max-width: 368px;
+    margin: 0 auto;
+}

@@ -1,0 +1,167 @@
+x-address, .x-address{
+    width: 100%;
+    min-width: 320px;
+    max-width: 400px;
+    box-sizing: border-box;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+@media (max-width: 460px) {
+    x-address, .x-address {
+        padding: 8px 4px;
+    }
+}
+
+@media (max-width: 400px) {
+    x-address, .x-address {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 340px) {
+    x-address, .x-address {
+        font-size: 11px;
+    }
+}
+
+x-address {
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+x-address:hover{
+    background: rgba(0, 0, 0, 0.2);
+}
+
+x-modals {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: background .4s ease-in-out;
+    z-index: 1;
+}
+
+x-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+    padding: 64px 0;
+}
+
+x-modal-container > * {
+    animation-duration: .4s !important;
+    animation-fill-mode: both;
+}
+
+.x-modal {
+    background: white;
+    color: rgba(0,0,0,0.8);
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+        0 1px 8px 0 rgba(0, 0, 0, 0.12),
+        0 3px 3px -2px rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    margin: auto;
+
+    max-width: 97%; /* Could also use 97vw */
+}
+
+.modal-header {
+    padding-top: 16px;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid #f3f3f3;
+}
+
+.modal-header h2 {
+    padding: 8px 46px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.modal-header x-popup-menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100% - 22px);
+    margin: 11px;
+}
+
+.modal-header [x-modal-close] {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    margin: 13px;
+}
+
+.modal-header [x-modal-close]:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.modal-header::after {
+    content: "";
+    height: 3px;
+    background: var(--primary-background-progress);
+    background-size: 200%;
+    display: block;
+    margin-top: 16px;
+}
+
+.x-modal.pending .modal-header::after {
+    /* animation: background-progress 2s linear infinite; */
+}
+
+@keyframes background-progress {
+    0%  { background-position: 0% 0 }
+    100%{ background-position: 200% 0 }
+}
+
+.modal-body {
+    padding: 32px 32px;
+    position: relative; /* Required for absolute positioning of account icon */
+}
+
+@media (max-width: 480px) {
+    .modal-body {
+        padding: 24px 12px;
+    }
+}
+
+x-loading-animation {
+    opacity: 1;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><style>@keyframes dash-animation { to { transform: rotate(240deg) translateZ(0); } } %23circle { animation: 3s dash-animation infinite linear; transform: rotate(-120deg) translateZ(0); transform-origin: center; }</style><defs><clipPath id="hexClip"><path clip-rule="evenodd" d="M16 4.29h32L64 32 48 59.71H16L0 32zm4.62 8h22.76L54.76 32 43.38 51.71H20.62L9.24 32z"/></clipPath></defs><path fill-rule="evenodd" d="M16 4.29h32L64 32 48 59.71H16L0 32zm4.62 8h22.76L54.76 32 43.38 51.71H20.62L9.24 32z" fill="%23fff" opacity=".2"/><g clip-path="url(%23hexClip)"><circle id="circle" cx="32" cy="32" r="16" fill="none" stroke-width="32" stroke="%23F6AE2D" stroke-dasharray="16.666 84.666"/></g></svg>');/* ALSO works in Firefox! */
+    /*background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0Ij48c3R5bGU+QGtleWZyYW1lcyBkYXNoLWFuaW1hdGlvbiB7IHRvIHsgdHJhbnNmb3JtOiByb3RhdGUoMjQwZGVnKSB0cmFuc2xhdGVaKDApOyB9IH0gI2NpcmNsZSB7IGFuaW1hdGlvbjogM3MgZGFzaC1hbmltYXRpb24gaW5maW5pdGUgbGluZWFyOyB0cmFuc2Zvcm06IHJvdGF0ZSgtMTIwZGVnKSB0cmFuc2xhdGVaKDApOyB0cmFuc2Zvcm0tb3JpZ2luOiBjZW50ZXI7IH08L3N0eWxlPjxkZWZzPjxjbGlwUGF0aCBpZD0iaGV4Q2xpcCI+PHBhdGggY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTYgNC4yOWgzMkw2NCAzMiA0OCA1OS43MUgxNkwwIDMyem00LjYyIDhoMjIuNzZMNTQuNzYgMzIgNDMuMzggNTEuNzFIMjAuNjJMOS4yNCAzMnoiLz48L2NsaXBQYXRoPjwvZGVmcz48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNiA0LjI5aDMyTDY0IDMyIDQ4IDU5LjcxSDE2TDAgMzJ6bTQuNjIgOGgyMi43Nkw1NC43NiAzMiA0My4zOCA1MS43MUgyMC42Mkw5LjI0IDMyeiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iLjIiLz48ZyBjbGlwLXBhdGg9InVybCgjaGV4Q2xpcCkiPjxjaXJjbGUgaWQ9ImNpcmNsZSIgY3g9IjMyIiBjeT0iMzIiIHI9IjE2IiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjMyIiBzdHJva2U9IiNGNkFFMkQiIHN0cm9rZS1kYXNoYXJyYXk9IjE2LjY2NiA4NC42NjYiLz48L2c+PC9zdmc+'); /* Works also in Firefox */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 72px;
+    z-index: 1;
+    display: block;
+    height: 72px;
+    width: 80px;
+}
+
+x-loading-animation + h2{
+    padding-top: 16px;
+}
