@@ -73,7 +73,6 @@ x-modal-container > * {
     animation-fill-mode: both;
 }
 
-
 .x-modal {
     background: white;
     color: rgba(0,0,0,0.8);
@@ -343,7 +342,6 @@ x-popup-menu > div > button .material-icons {
     25%{ opacity: 0; }
     to{ opacity: 1; }
 }
-
 
 x-accounts {
     text-align: right;
@@ -719,7 +717,6 @@ x-transaction-modal .hash {
     font-family: monospace;
 }
 
-
 @media (max-width: 560px) {
     x-transaction-modal x-identicon {
         width: 90px;
@@ -747,7 +744,6 @@ x-transaction-modal .hash {
         padding: 8px 4px;
     }
 }
-
 
 x-transactions {
     display: block;
@@ -1062,7 +1058,6 @@ x-expandable[dropdown] [expandable-content] {
         0  8px 10px -5px rgba(0, 0, 0, 0.4);
 }
 
-
 x-accounts-dropdown {
     display: block;
     width: 100%;
@@ -1201,7 +1196,6 @@ x-address-input.multiline .input-row input {
     border-bottom: 1px solid var(--error-color) !important;
 }
 
-
 /* Numpad */
 
 x-numpad {
@@ -1237,7 +1231,6 @@ x-numpad.has-dot > [dot] {
     opacity: 0.3;
     pointer-events: none;
 }
-
 
 x-amount-input input {
     font-size: 3em !important;
@@ -1345,8 +1338,6 @@ x-amount-input x-currency-nim {
     border-bottom: 1px solid var(--error-color) !important;
 }
 
-
-
 x-fee-input .x-fee-labels {
     max-width: 320px;
     margin: auto;
@@ -1377,8 +1368,6 @@ x-fee-input x-currency-fiat {
 .x-input.shake input {
     border-bottom: 1px solid var(--error-color) !important;
 }
-
-
 
 x-extra-data-input input[type="text"] {
     width: 100%;
@@ -1654,7 +1643,6 @@ x-create-custom-request-link-modal ul {
 .patt-hidden .patt-lines {
 	display:none;
 }
-
 
 x-settings {
     width: 100%;
@@ -2085,7 +2073,6 @@ x-settings input[type="checkbox"] {
     animation-delay: calc(7 * var(--ledger-connect-animation-duration) / 3.5 / 8);
 }
 
-
 x-ledger-ui-modal {
     max-width: 800px !important;
     padding: 32px;
@@ -2093,7 +2080,6 @@ x-ledger-ui-modal {
 x-upgrade-modal {
     width: 600px;
 }
-
 
 html,
 body {
@@ -2178,7 +2164,7 @@ nav.editor a {
     font-weight: bold;
     opacity: 0.6;
     line-height: 15px;
-    cursor: pointer;    
+    cursor: pointer;
 }
 
 nav.editor a.current {
@@ -2309,7 +2295,6 @@ body.preparing footer {
     opacity: 0;
 }
 
-
 x-disclaimer-modal {
     width: 690px;
 }
@@ -2359,10 +2344,6 @@ x-safe-lock .patt-holder {
     margin: auto;
     margin-top: 40px;
 }
-
-
-
-
 
 nav.actions.floating-actions {
     margin-bottom: -16px;
@@ -2516,7 +2497,6 @@ body[browser-edge]::after {
 body[no-local-storage]::after {
     content: 'Local Storage not available. If you are in private browsing mode, try to run this page in normal mode.';
 }
-
 
 #app {
     width: 100%;

@@ -25,8 +25,6 @@ x-loading-animation + h2{
     border-bottom: 1px solid var(--error-color) !important;
 }
 
-
-
 x-passphrase-input form {
     display: flex;
     justify-content: center;
@@ -181,8 +179,6 @@ x-passphrase-getter.wrong button {
 .x-input.shake input {
     border-bottom: 1px solid var(--error-color) !important;
 }
-
-
 
 x-mnemonic-input {
     text-align: center;
@@ -376,7 +372,6 @@ x-privacy-agent-container {
         /* display: none; */
     }
 }
-
 
 /* todo fix workaround and make mixin-like styles work again */
 
@@ -626,7 +621,6 @@ x-delete {
     }
 }
 
-
 /* Unlocking Animation */
 
 .unlocking x-pin-label:empty:before {
@@ -765,7 +759,6 @@ x-downloadable-image [long-touch-indicator] {
         stroke: #F6AE2D;
     }
 }
-
 
 x-download-file{
     position:  relative;
@@ -936,7 +929,6 @@ x-identicons x-identicon:nth-child(7) {
     transform: translate(0, 128px);
 }
 
-
 x-identicons [button] {
     opacity: 0;
     /* transform: translate(0, 480px); */
@@ -948,7 +940,6 @@ x-identicons [button] {
     pointer-events: none;
     width: calc(100% - 64px);
 }
-
 
 x-identicons x-backdrop {
     position: fixed;
@@ -1150,7 +1141,6 @@ x-identicons x-identicon:nth-child(7) {
 .transaction .hash {
     font-family: monospace;
 }
-
 
 @media (max-width: 480px) {
     .transaction x-identicon {

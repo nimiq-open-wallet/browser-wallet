@@ -732,7 +732,6 @@ p {
     margin: 0;
 }
 
-
 p {
     text-align: center;
     line-height: 19px;
@@ -778,8 +777,6 @@ button+[secondary],
     margin-bottom:  8px;
 }
 
-
-
 li {
     line-height: 24px;
     text-align: left;
@@ -797,7 +794,6 @@ li {
         padding-bottom: 8px;
     }
 }
-
 
 x-route, [x-route] {
     display: none;
