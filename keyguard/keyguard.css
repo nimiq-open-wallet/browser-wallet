@@ -433,67 +433,7 @@ x-wordlist {
     margin: 0 auto;
 }
 
-nimiq-logo {
-    /* width: 264px; */
-    height: 30px;
-    display: inline-flex;
-    align-items: center;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: white;
-    font-size: 17px;
-    font-weight: 600;
-    font-family: 'Source Sans Pro', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    padding-left: 46px;
-    text-align: left;
-    background-image: url('data:image/svg+xml,<svg width="499" height="440" xmlns="http://www.w3.org/2000/svg"><path d="M389.33 20.73C382.65 9.28 366.48 0 353.24 0h-208c-13.26 0-29.4 9.28-36.09 20.73L5.33 198.87c-6.68 11.45-6.68 30.02 0 41.47l103.82 178.14c6.68 11.45 22.85 20.74 36.09 20.74h208c13.26 0 29.4-9.28 36.09-20.74l103.82-178.14c6.68-11.45 6.68-30.01 0-41.47L389.33 20.73zM272.6 347.45v41.1h-38.74v-39.53c-23.53-2.82-51.45-13.02-70.28-30.12l25.57-39.06c20.4 15.06 37.96 22.9 57.1 22.9 22.43 0 32.31-9.1 32.31-27.29 0-40.63-105.4-39.84-105.4-111.06 0-38.74 23.2-65.57 60.7-73.1V50.51h38.74v40c25.57 3.6 43.92 16.16 59.45 32.47l-29.49 33.26c-14.43-13.02-26.66-19.77-43.45-19.77-19.13 0-29.49 7.53-29.49 25.26 0 37.49 105.41 34.35 105.41 109.96-.15 37.8-21.33 67.13-62.43 75.76z" fill="%23FFC107" fill-rule="evenodd"/></svg>');
-    background-repeat: no-repeat;
-    background-size: contain;
-    position: relative;
-}
-
-nimiq-logo:empty:after {
-    content: 'NIMIQ';
-}
-
-nimiq-logo[large] {
-    width: 100%;
-    background-position: center top;
-    font-weight: 800;
-    color: rgba(255,255,255, 0.5);
-    text-align: center;
-    padding-top: 144px;
-    padding-left: 0;
-    background-size: 88px;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-position: center center;
-}
-
-nimiq-logo[large]:empty:after {
-    content: 'Welcome To Nimiq';
-}
-
-nimiq-logo sup {
-    font-size: 10px;
-    letter-spacing: 1px;
-    vertical-align: baseline;
-    position: relative;
-    top: -8px;
-    left: 1px;
-}
-
-nimiq-logo [logo-link] {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 34px;
-    height: 30px;
-    z-index: 1;
-}
-
+@import url("../style/nimiq4.css");
 @import url("../style/nimiq2.css");
 
 x-account-backup-import {
