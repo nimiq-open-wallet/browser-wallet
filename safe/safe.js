@@ -5913,7 +5913,7 @@ class XSendTransaction extends MixinRedux(XElement) {
 
     set loading(isLoading) {
         this._isLoading = !!isLoading;
-        this.$button.textContent = this._isLoading ? 'Loading' : 'Generate';
+        this.$button.textContent = this._isLoading ? 'Loading' : 'Send';
         this.setButton();
     }
 
