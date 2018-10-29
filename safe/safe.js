@@ -6236,6 +6236,7 @@ class XAccountModal extends MixinModal(XAccount) {
                 <x-popup-menu left-align>
                     <button rename><i class="material-icons">mode_edit</i> Rename</button>
                     <button backupWords><i class="material-icons">text_format</i> Backup Recovery Words</button>
+                    <button backupFile><i class="material-icons">crop_portrait</i> Backup Access File</button>
                     <button upgrade><i class="material-icons">check_circle</i> Upgrade</button>
                 </x-popup-menu>
                 <i x-modal-close class="material-icons">close</i>
@@ -6277,6 +6278,7 @@ class XAccountModal extends MixinModal(XAccount) {
 
         this.$renameButton = this.$('button[rename]');
         this.$backupWordsButton = this.$('button[backupWords]');
+        this.$backupFileButton = this.$('button[backupFile]');
         this.$upgradeButton = this.$('button[upgrade]');
 
         this._height = 0;
@@ -6287,6 +6289,7 @@ class XAccountModal extends MixinModal(XAccount) {
         return {
             'click button[upgrade]': _ => this.fire('x-upgrade-account', this.properties.address),
             'click button[backupWords]': _ => this.fire('x-account-modal-backup-words', this.properties.address),
+            'click button[backupFile]': _ => this.fire('x-account-modal-backup-file', this.properties.address),
             'click button[rename]': _ => this.fire('x-account-modal-rename', this.properties.address),
             'click button[send]': _ => this.fire('x-account-modal-new-tx', this.properties.address)
         }
@@ -9603,6 +9606,7 @@ class XSafe extends MixinRedux(XElement) {
             'x-account-modal-new-tx': this._newTransactionFrom.bind(this),
             'x-upgrade-account': this._clickedAccountUpgrade.bind(this),
             'x-account-modal-backup-words': this._clickedAccountBackupWords.bind(this),
+            'x-account-modal-backup-file': this._clickedAccountBackupFile.bind(this),
             'x-account-modal-rename': this._clickedAccountRename.bind(this),
             'click a[disclaimer]': () => XDisclaimerModal.show(),
             'x-setting-visual-lock-pin': this._onSetVisualLock
@@ -9659,6 +9663,16 @@ class XSafe extends MixinRedux(XElement) {
         }
     }
 
+	async _clickedAccountBackupFile(address) {
+        try {
+            await accountManager.backupFile(address);
+            XToast.success('Account backed up successfully.');
+        } catch (e) {
+            console.error(e);
+            XToast.warning('No backup created.');
+        }
+	}
+	
     async _clickedAccountBackupWords(address) {
         try {
             await accountManager.backupWords(address);

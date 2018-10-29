@@ -3710,9 +3710,6 @@ class KeyguardApi {
     async backupFile(address) {
         if (!ValidationUtils.isValidAddress(address)) return;
 
-        const key = await keyStore.getPlain(address);
-        if (key.type !== KeyType.LOW) throw new Error('Unauthorized: address is not a Wallet account');
-
         return this._startRequest(RequestTypes.BACKUP_FILE, {
             address
         });
@@ -7135,7 +7132,6 @@ class XDownloadFile extends MixinRedux(XElement) {
 
     static mapStateToProps(state) {
         return {
-           encryptedKeyPair: state.request.data.encryptedKeyPair,
            address: state.request.data.address
         }
     }
@@ -7143,11 +7139,11 @@ class XDownloadFile extends MixinRedux(XElement) {
     async _onPropertiesChanged(changes) {
         const { address } = this.properties;
 
-        const { encryptedKeyPair } = changes;
+        if (!address) return;
 
-        if (!encryptedKeyPair || !address) return;
+        const key = await keyStore.getPlain(address);
 
-        const encodedWalletKey = `#2${ Nimiq.BufferUtils.toBase64(encryptedKeyPair) }`;
+        const encodedWalletKey = `${ key.type === KeyType.LOW ? '#2' : '' }${ Nimiq.BufferUtils.toBase64(key.encryptedKeyPair) }`;
 
         const qrPosition = WalletBackup.calculateQrPosition();
 
@@ -7230,12 +7226,13 @@ class XBackupFile extends MixinRedux(XElement) {
 
     html() { return `
         <x-backup-enter-pin x-route=""></x-backup-enter-pin>
+        <x-authenticate-backup x-route=""></x-authenticate-backup>
         <x-download-file x-route="download"></x-download-file>
         `;
     }
 
     children() {
-        return [ XBackupEnterPin, XDownloadFile ];
+        return [ XBackupEnterPin, XAuthenticateBackup, XDownloadFile ];
     }
 
     static get actions() {
@@ -7244,17 +7241,10 @@ class XBackupFile extends MixinRedux(XElement) {
 
     listeners() {
         return {
-            'x-authenticate-pin-submitted': this._onSubmit.bind(this),
-            'x-file-download-complete': this._onFileDownload.bind(this)
+            'x-authenticate-pin-submitted': pin => this.actions.backupFile(pin),
+			'x-authenticate-submitted': passphrase => this.actions.backupFile(passphrase),
+            'x-file-download-complete': () => this.actions.setResult(RequestTypes.BACKUP_FILE, true)
         };
-    }
-
-    _onSubmit(pin) {
-        this.actions.backupFile(pin);
-    }
-
-    _onFileDownload() {
-        this.actions.setResult(RequestTypes.BACKUP_FILE, true);
     }
 }
 
